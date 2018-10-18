@@ -22,13 +22,12 @@ export function Player(type, callback, override){
 		this.connectEffects();
 		this.connectToAmp();
 		// connect player
-		this.ready();
 	}
 
 	this.setUpPlayer = () => {
 		let instrument = PlayerMap[this.type];
 		this.settings = this.override.settings || instrument.defaultSettings;
-		this.player = instrument.getPlayer(this.settings, this.ready);
+		this.player = instrument.getPlayer(this.settings, this.setReady);
 		this.notes = instrument.notes || this.generateKeys();
 	}
 
@@ -87,7 +86,7 @@ export function Player(type, callback, override){
 		let instrument = PlayerMap[this.type];
 	}
 
-	this.ready = () => {
+	this.setReady = () => {
 		let instrument = PlayerMap[this.type];
 		this.ready = true;
 		// if async instrument, callback will change state to ready, if not, state will be ready on init
