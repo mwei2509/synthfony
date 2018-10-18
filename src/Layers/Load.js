@@ -7,7 +7,7 @@ import { Player } from './Player';
 		settings: {}
 	}
 */
-export const getInstrument = (type, callback, override) => {
+export const getPlayer = (type, callback, override) => {
 	debugger;
 	let player = new Player(type, callback, override);
 	debugger;

@@ -2,7 +2,7 @@ import { generateIdWithPrefix } from '../utils/functions';
 // import { getInstrument } from '../Instruments/LoadPlayers';
 import { getInstrument } from '../Instruments/Load';
 import { batchActions } from 'redux-batched-actions';
-import { Player, Person } from '../Instruments/Player';
+import { Player } from '../Layers/Player';
 
 export const addTrackBpm= (bpm) => {
 	return {
