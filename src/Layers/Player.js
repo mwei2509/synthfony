@@ -3,6 +3,13 @@ import Effects from './Effects';
 import Tone from 'tone';
 import { SynthFony } from '../utils/variables'
 
+/**
+ * Sets up a new "player" layers
+ * @param {string} type - instrument type, e.g. piano, bass
+ * @param {function} callback - optional
+ * @param {object} override - optional
+ * @returns {object} settings
+ */
 export function Player(type, callback, override){
 	this.callback = callback;
 	this.type = type;
