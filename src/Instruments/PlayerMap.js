@@ -13,7 +13,8 @@ const PlayerMap = {
 			settings.baseUrl = `${BASE_URL}/assets/audio/salamander-piano/`;
 			settings.onload = callback;
 			return new Tone.Sampler(PlayerMap.piano.notes, settings);
-		}
+		},
+		async: true
 	},
 	clap: {
 		defaultSettings: {
@@ -31,7 +32,8 @@ const PlayerMap = {
 		getPlayer: (settings, callback) => {
 			settings.onload = callback;
 			return new Tone.Players(PlayerMap.clap.notes, settings);
-		}
+		},
+		async: true
 	},
 	hihat: {
 		defaultSettings: {
@@ -54,7 +56,8 @@ const PlayerMap = {
 		getPlayer: (settings, callback) => {
 			settings.onload = callback;
 			return new Tone.Players(PlayerMap.hihat.notes, settings);
-		}
+		},
+		async: true
 	},
 	tom: {
 		defaultSettings: {
@@ -75,7 +78,8 @@ const PlayerMap = {
 		getPlayer: (settings, callback) => {
 			settings.onload = callback;
 			return new Tone.Players(PlayerMap.tom.notes, settings);
-		}
+		},
+		async: true
 	},
 	snare: {
 		defaultSettings: {
@@ -92,6 +96,7 @@ const PlayerMap = {
 			},
 		},
 		getPlayer: (settings, callback) => {
+			callback();
 			return new Tone.NoiseSynth(settings);
 		}
 	},
@@ -111,6 +116,7 @@ const PlayerMap = {
 			}
 		},
 		getPlayer: (settings, callback) => {
+			callback();
 			return new Tone.MonoSynth(settings);
 		}
 	},
@@ -124,6 +130,7 @@ const PlayerMap = {
 			"octaves" : 10
 		},
 		getPlayer: (settings, callback) => {
+			callback();
 			return new Tone.MembraneSynth(settings);
 		}
 	},
@@ -143,6 +150,7 @@ const PlayerMap = {
 			},
 		},
 		getPlayer: (settings, callback) => {
+			callback();
 			return new Tone.PolySynth(3, Tone.Synth, settings);
 		}
 	},
@@ -161,6 +169,7 @@ const PlayerMap = {
 			}
 		},
 		getPlayer: (settings, callback) => {
+			callback();
 			return new Tone.MembraneSynth(settings);
 		}
 	}

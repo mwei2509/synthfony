@@ -4,9 +4,10 @@ import Tone from 'tone';
 import { SynthFony } from '../utils/variables'
 
 export function Player(type, callback, override){
-	console.log(this);
+	this.callback = callback;
 	this.type = type;
 	this.override = override || {};
+	this.ready = false;
 
 	this.init = () => {
 		this.setUpPlayer();
@@ -14,12 +15,13 @@ export function Player(type, callback, override){
 		this.connectEffects();
 		this.connectToAmp();
 		// connect player
+		this.ready();
 	}
 
 	this.setUpPlayer = () => {
-		let instrument = PlayerMap[type];
+		let instrument = PlayerMap[this.type];
 		this.settings = this.override.settings || instrument.defaultSettings;
-		this.player = instrument.getPlayer(this.settings, callback);
+		this.player = instrument.getPlayer(this.settings, this.ready);
 		this.notes = instrument.notes || this.generateKeys();
 	}
 
@@ -75,17 +77,28 @@ export function Player(type, callback, override){
 	}
 
 	this.trigger = () => {
-		
+		let instrument = PlayerMap[this.type];
+	}
+
+	this.ready = () => {
+		let instrument = PlayerMap[this.type];
+		this.ready = true;
+		// if async instrument, callback will change state to ready, if not, state will be ready on init
+		if (typeof this.callback === 'function' && instrument.async) {
+			this.callback()
+		}
 	}
 
 	this.init();
+
 	return {
 		player: this.player,
 		set: this.set,
 		trigger: this.trigger,
+		ready: this.ready
 		// overridable
 		settings: this.settings,
 		effects: this.effects,
-		notes: this.notes
+		notes: this.notes,
 	}
 }
