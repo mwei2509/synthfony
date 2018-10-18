@@ -1,0 +1,43 @@
+input[type=range][orient=vertical]
+{
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+    width: 8px;
+    height: 150px;
+    padding: 0 5px;
+	background: transparent;
+	outline: none;
+}
+
+.VerticalRange {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 80px;
+}
+.VerticalRange>label {
+	font-size: 10px;
+}
+.VerticalRange>label>p {
+	padding: 0px;
+	margin: 0px;
+}
+
+/* notifications */
+.Notifications {
+	width: 200px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.notification {
+	background-color: #D87339;
+	padding: 12px 10px;
+	border-radius: 5px;
+	margin: 5px 5px 0 0;
+	font-size: 14px;
+}

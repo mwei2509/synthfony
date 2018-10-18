@@ -1,0 +1,54 @@
+.keyboard {
+	display: flex;
+	flex-direction: row;
+	background-color: #000;
+	padding: 5px;
+	border-radius: 5px;
+	width: 1150px;
+	align-items: stretch;
+}
+
+.key {
+	justify-content: space-between;
+	height: 85px;
+	width: 22px;
+	position: relative;
+	cursor: pointer;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.key>span {
+	position: absolute;
+	bottom: 0;
+	left: 2px;
+	font-size: 9px;
+	margin: 0;
+}
+
+.black {
+	width: 20px;
+	background-color: #000;
+	color: #fff;
+	height: 50px;
+	margin-left: -10px;
+	margin-right: -10px;
+	z-index: 10;
+}
+
+.white {
+	z-index: 0;
+	background-color: #fff;
+	border: .5px solid #ddd;
+}
+.white:hover {
+	background-color: #eee;
+}
+.white:active {
+	background-color: #ddd;
+}
+.black:hover {
+	background-color: #222;
+}
+.black:hover {
+	background-color: #333;
+}

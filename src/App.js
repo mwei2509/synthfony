@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import RouteHandler from './RouteHandler';
 import './App.css';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faSave, faPlay, faPause, faPlayCircle, 
+	faPauseCircle, faPlus, faArrowCircleDown, 
+	faArrowCircleUp, faTrash, faMusic, faTimes, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { AudioVis } from './utils/variables'
+import Tone from 'tone'
+
+AudioVis.meter = new Tone.Meter();
+AudioVis.fft = new Tone.FFT(32);
+AudioVis.waveform = new Tone.Waveform(1024);
+library.add(faSave, faPlay, faPause, faPlayCircle, faPauseCircle, 
+	faPlus, faArrowCircleDown, faArrowCircleUp, faTrash, faMusic, faTimes, faArrowRight)
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+	  	<RouteHandler location={this.props.location} />
       </div>
     );
   }

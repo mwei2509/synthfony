@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+body, html {
+	font-family: 'Montserrat', sans-serif;
+}
+
+.SidebarControls {
+	height: 100%;
+	width: 30px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	/* background-color: #3d99c6; */
+	/* color: #fff; */
+	overflow-x: hidden;
+	padding: 10px 0px 0px 0px;
+}
+
+.CreateEditTrackWrapper, .CreateCollabTrack {
+	padding-left: 60px;
+}
+.LayersWrapper {
+	/* width: 100%;
+	overflow-x: scroll;
+	overflow-y: hidden; */
+	/* width: 95vw; */
+	/* padding: 15px;
+	background-color: #eee;
+	border-radius: 15px;
+	margin-left: auto;
+	margin-right: auto; */
+}
+
+button {
+	cursor: pointer;
+	background-color: #fff;
+	border-radius: 6px;
+	padding: 5px;
+	border: 0px;
+	outline: none;
+}
+button:hover {
+	background-color: #FFFFE0;
+}
+select {
+	cursor: pointer;
+	outline: none;
+	padding: 10px 8px 10px 14px;
+	background: #fff;
+	border: 0px;
+	padding: 5px;
+	border-radius: 6px;
+	margin-right: 5px;
+	/* position: relative; */
+}
+.Layers {
+	/* min-width: 90vw; */
+	border-radius: 5px;
+	background-color: #fff;
+	/* overflow-x: scroll;
+	overflow-y: hidden; */
+	white-space: nowrap;
+	margin-bottom: 110px;
+}
+/* purple: F7F7F7
+green: 9CD29E
+orange: D87339
+yellow: EDDE6D
+blue: 7FC5C5
+teal: 428589*/
+.Homepage, .CollabIntro {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	background-color: #9EC23C;
+}
+
+.modal {
+	background-color: #F9DB6E;
+	color: #5698C2;
+	margin: auto;
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	right: 100px;
+	bottom: 100px;
+	padding: 50px;
+}
+.close-modal {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	font-size: 20px;
+}
+.modal>input, .CollabIntro>input {
+	border: 0px;
+	font-size: 20px;
+	outline: none;
+	padding: 12px 15px;
+	border-radius: 15px 0px 0px 15px;
+}
+.input-button {
+	cursor: pointer;
+	transition-duration: 1s;
+	height: 50px;
+	width: 50px;
+	font-size: 20px;
+	padding: 12px;
+	border-radius: 0px 15px 15px 0px;
+	background-color: #5698C2;
+}
+.input-button:hover {
+	background-color: #9DC6B0;
+}
+.modal>h1, .CollabIntro>h1 {
+	font-size: 40px;
+}
+.modal>p, .CollabIntro>p{
+	font-size: 24px;
+}
+
+.AudioVisualization {
+	display: flex;
+}
