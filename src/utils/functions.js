@@ -41,3 +41,15 @@ export const getTimeDiffMs = (origTime, newTime) => {
 export const isObject = (obj) => {
 	return obj !== null && typeof obj === 'object' && !Array.isArray(obj);
 }
+
+export const isNumber = (num) => {
+	return !isNaN(Number(num));
+}
+
+export const isString = (str) => {
+	return typeof str === 'string';
+}
+
+export const isUndefined = (item) => {
+	return typeof item === 'undefined';
+}

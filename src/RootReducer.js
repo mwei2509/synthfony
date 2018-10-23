@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux'
-import trackReducer from './TrackMaker/track-reducers/index.js'
-// import editorReducer from './TrackMaker/editor-reducers/index.js'
-import managePlayback from './Playback/managePlayback.js'
-import manageSocket from './Socket/manageSocket'
+import trackReducer from './TrackMaker/Reducer'
+import managePlayback from './Playback/Reducer'
+import manageSocket from './Collaboration/Reducer'
+import manageNotifications from './Notifications/Reducer'
 
 const rootReducer = combineReducers({
 	track: trackReducer,
 	playback: managePlayback,
-	// editor: editorReducer,
-	connection: manageSocket
+	connection: manageSocket,
+	notifications: manageNotifications
 })
 
 export default rootReducer

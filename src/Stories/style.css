@@ -3,19 +3,44 @@ body, html {
 	font-family: 'Montserrat', sans-serif;
 }
 
+.container {
+	display: flex;
+}
 .SidebarControls {
 	height: 100%;
 	width: 30px;
-	position: fixed;
-	top: 0;
-	left: 0;
+    flex: 0 0 30px;
+	/* position: fixed; */
+	/* top: 0; */
+	/* left: 0; */
 	/* background-color: #3d99c6; */
 	/* color: #fff; */
-	overflow-x: hidden;
-	padding: 10px 0px 0px 0px;
+	/* overflow-x: hidden; */
+	/* padding: 10px 0px 0px 0px; */
+	/* transition: all .3s; */
 }
 
-.CreateEditTrackWrapper, .CreateCollabTrack {
+.SidebarControls.expanded {
+	/* background-color: #000; */
+	/* color: #fff; */
+	text-align: left;
+	width: 130px;
+	width: 130px;
+    flex: 0 0 130px;
+	/* position: relative;s */
+}
+.sidebar-label {
+	font-size: 11px;
+	margin-left: 5px;
+}
+.sidebar-label.title {
+	font-weight: bold;
+	padding: 2px;
+	font-size: 12px;
+	/* text-align: center; */
+}
+
+.CreateEditTrackWrapper {
 	padding-left: 60px;
 }
 .LayersWrapper {
@@ -53,6 +78,7 @@ select {
 	/* position: relative; */
 }
 .Layers {
+   	flex-grow: 1;
 	/* min-width: 90vw; */
 	border-radius: 5px;
 	background-color: #fff;
@@ -122,4 +148,13 @@ teal: 428589*/
 
 .AudioVisualization {
 	display: flex;
+}
+
+.icon {
+	display: block;
+	margin: 5px;
+	cursor: pointer;
+}
+.icon:hover {
+	color: #9CD29E;
 }

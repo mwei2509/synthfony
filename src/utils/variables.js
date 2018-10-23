@@ -5,7 +5,7 @@ export const AudioVis = {
 };
 
 export const SynthFony = {
-	Players: {},
+	Recipes: {},
 	Effects: {}
 };
 

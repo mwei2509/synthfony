@@ -5,20 +5,35 @@ import { addTrackBpm } from './actions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class TrackDetails extends Component {
+	getExpanded(msg) {
+		if (this.props.expanded) {
+			return <span className="sidebar-label">{msg}</span>
+		}
+		return null;
+	}
 	render() {
 		let { addTrackBpm, details } = this.props;
-							// <input type="range" min="50" max="140" step="1" value={details.bpm} onChange={(e)=>{ addTrackBpm(e.target.value); }} />
-		return (
-			<div className='track-details'>
-				<div className='track-details__bpm'>
-					<span className="splitter"></span>
-					<span className="icon" onClick={()=>{addTrackBpm((Number(details.bpm) + 1))}}><FontAwesomeIcon icon="arrow-circle-up" /></span>
-					<span className="tinyText">BPM: {details.bpm}</span>
-					<span className="icon" onClick={()=>{addTrackBpm((Number(details.bpm) - 1))}}><FontAwesomeIcon icon="arrow-circle-down" /></span>
-					<span className="splitter"></span>
+		if (this.props.expanded) {
+			return (
+				<div className='track-details'>
+					<div className='track-details__bpm'>
+						<span className="splitter"></span>
+						<span className="sidebar-label title">TRACK DETAILS</span>
+						<span className="sidebar-label">Beats Per Minute: {details.bpm}</span>
+						<span className="icon" onClick={()=>{addTrackBpm((Number(details.bpm) + 1))}}>
+							<FontAwesomeIcon icon="arrow-circle-up" />
+							<span className="sidebar-label">increase tempo</span>
+						</span>
+						<span className="icon" onClick={()=>{addTrackBpm((Number(details.bpm) - 1))}}>
+							<FontAwesomeIcon icon="arrow-circle-down" />
+							<span className="sidebar-label">decrease tempo</span>
+						</span>
+						<span className="splitter"></span>
+					</div>
 				</div>
-			</div>
-		);
+			)
+		}
+		return null;
 	}
 }
 

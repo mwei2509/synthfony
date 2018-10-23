@@ -1,0 +1,4 @@
+.SettingControls {
+	display: flex;
+	flex-direction: row;
+}

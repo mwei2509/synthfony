@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './style.css';
-import { AudioVis } from '../utils/variables'
+import { AudioVis, SynthFony } from '../utils/variables'
 import Tone from 'tone'
 
 export default class AudioVisualization extends Component {
@@ -63,7 +63,8 @@ export default class AudioVisualization extends Component {
 	}
 	drawMeter() {
 		if (this.context) {			
-			let { meter } = this.props.layer;
+			let { player } = this.props.layer;
+			let meter = player.meter;
 			let level = meter.getLevel();
 			level = Tone.dbToGain(level);
 			this.context.clearRect(0,0,this.width,this.height);

@@ -12,32 +12,35 @@ input[type=range][orient=vertical]
 .VerticalRange {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	width: 80px;
+	width: 30px;
 }
 .VerticalRange>label {
-	font-size: 10px;
+	font-size: 9px;
+	transform: rotate(270deg);
+	height: 80px;
+	width: 80px;
+	text-align: right;
 }
 .VerticalRange>label>p {
 	padding: 0px;
 	margin: 0px;
 }
 
-/* notifications */
-.Notifications {
-	width: 200px;
-	position: absolute;
+/* Modal */
+
+.modal-wrapper {
+	background-color: rgba(0,0,0,0.4);
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
 	top: 0;
-	right: 0;
-	z-index: 1;
-	display: flex;
-	flex-direction: column;
+	left: 0;
 }
 
-.notification {
-	background-color: #D87339;
-	padding: 12px 10px;
-	border-radius: 5px;
-	margin: 5px 5px 0 0;
-	font-size: 14px;
+.inner-modal {
+	margin: 50px auto;
+	background: #fff;
+	width: 50%;
+	height: 50%;
+	z-index: 5;
 }

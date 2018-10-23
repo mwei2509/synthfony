@@ -22,7 +22,10 @@ class SaveTrack extends Component {
 	render() {
 		return (
 			<div className='SaveTrack'>
-				<span className="icon" onClick={this.saveTrack}><FontAwesomeIcon icon="save" /></span>
+				<span className="icon" onClick={this.saveTrack}>
+					<FontAwesomeIcon icon="save" />
+					{this.props.expanded ? <span className="sidebar-label">Save Track</span> : null}
+				</span>
 			</div>
 		);
 	}

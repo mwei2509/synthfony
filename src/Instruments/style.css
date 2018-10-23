@@ -1,0 +1,30 @@
+.Drums {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.drum-hits {
+	margin: 2px;
+	background-color: #eee;
+	border-radius: 20px;
+	height: 40px;
+	width: 40px;
+	font-size: 10px;
+	cursor: pointer;
+}
+
+.drum-hits:hover {
+	background-color: #ddd;
+}
+.drum-hits:active {
+	background-color: #ccc;
+}
+
+.drum-hits>span {
+	margin-top: auto;
+	margin-bottom: auto;
+	display: inline-block;
+	height: 50px;
+}

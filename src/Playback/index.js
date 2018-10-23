@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setStopStatus, updateIndices } from './actions';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { SynthFony } from '../utils/variables';
 import Tone from 'tone'
 import './style.css';
 
@@ -48,7 +49,7 @@ class Playback extends Component {
 		this.getNotesToPlay(this.index).forEach((note_id) => {
 			let note = notes[note_id];
 			let layer = layers[note.layer_id];
-			layer.trigger(layer, note.note, note.duration);
+			layer.player.trigger(	note.note, note.duration);
 		})
 		if (this.index >= numDivisions - 1) {
 			this.index = 0;
@@ -82,12 +83,25 @@ class Playback extends Component {
 			this.loop.stop();
 		}
 	}
+	
+	getExpandedLabel(msg) {
+		if (this.props.expanded) {
+			return <span className="sidebar-label">{msg}</span>
+		}
+		return null;
+	}
 
 	render() {
 		return (
 			<div className='Playback'>
-				<span className="icon" onClick={this.startSequence}><FontAwesomeIcon icon="play-circle" /></span>
-				<span className="icon" onClick={this.stopSequence}><FontAwesomeIcon icon="pause-circle" /></span>
+				<span className="icon" onClick={this.startSequence}>
+					<FontAwesomeIcon icon="play-circle" />
+					{this.getExpandedLabel('Play Track')}
+				</span>
+				<span className="icon" onClick={this.stopSequence}>
+					<FontAwesomeIcon icon="pause-circle" />
+					{this.getExpandedLabel('Pause Track')}
+				</span>
 			</div>
 		);
 	}

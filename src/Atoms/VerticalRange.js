@@ -41,7 +41,7 @@ export default class VerticalRange extends Component {
 					min={this.getMin()}
 					max={this.getMax()}
 					step={this.getStep()}/>
-				<label>{this.getLabel()}<br />{value}</label>
+				<label>{this.getLabel()}</label>
 			</div>
 		);
 	}

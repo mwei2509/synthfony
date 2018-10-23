@@ -27,14 +27,19 @@ export default class Keyboard extends Component {
 
 	render() {
 		var keyboard = this.generateKeys();
+		let {
+			playKey,
+			releaseKey,
+			small
+		} = this.props;
 		return (
-			<div className="keyboard">
+			<div className={`keyboard ${small ? 'small':''}`}>
 				{keyboard.map((key, index)=>{
 					return <Key 
 						key={index}
 						info={key} 
-						onMouseDown={this.props.playKey}
-						onMouseUp={this.props.releaseKey}
+						onMouseDown={playKey}
+						onMouseUp={releaseKey}
 						/>
 					})}
 			</div>

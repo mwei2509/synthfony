@@ -26,18 +26,20 @@ export default class Piano extends Component {
 	render() {
 		if (this.state.ready) {
 			return (
-				<div className='Piano'>
+				<div className="Piano">
 					<Keyboard 
 						playKey={this.playKey}
-						releaseKey={this.releaseKey} />
+						releaseKey={this.releaseKey}
+						small={this.props.small} />
 				</div>
 			);
 		} else {
 			return (
-				<div className='Piano'>
+				<div className="Piano">
 					<Keyboard 
 						playKey={this.playKey}
-						releaseKey={this.releaseKey} />
+						releaseKey={this.releaseKey}
+						small={this.props.small} />
 				</div>
 			);
 			// return <LoadingDiv />

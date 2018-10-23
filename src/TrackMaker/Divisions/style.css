@@ -1,0 +1,31 @@
+.Division {
+	width: 100%;
+	/* border: .5px solid #bf9600; */
+	/* border-right: .5px solid #E0B225; */
+	cursor: pointer;
+	background-color: #E1B121;
+}
+.Expanded > .Beat > .Division {
+	border-right: .5px solid #E0B225;
+	background-color: #f2be00;
+}
+.Division:hover {
+	background-color: #ffdb5a !important;
+	/* border: .4px solid #ddd; */
+}
+
+.Division.selected {
+	/* background-color: #ff0000; */
+	/* border: 2px dashed #5ac3ca; */
+	background-color: #ffdb5a !important;
+	z-index: 3;
+	/* box-shadow: 2px 2px 5px rgba(68, 68, 68, 0.6); */
+}
+
+.Division.being-played {
+	background-color: #ff9999 !important;
+}
+
+.Division.being-played.selected {
+	background-color: #F0CAC5 !important;
+}
