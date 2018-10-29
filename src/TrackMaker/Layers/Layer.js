@@ -8,7 +8,7 @@ import Measures from '../Measures/Measures';
 class Layer extends Component {
 	getStyle() {
 		let { layer } = this.props;
-		let numMeasures = layer.measure_ids.length;
+		let numMeasures = layer.numMeasures;
 		return {minWidth: `${numMeasures*80}px`};
 	}
 	getClasses() {
@@ -20,11 +20,11 @@ class Layer extends Component {
 
 	render() {
 		let { layer } = this.props;
+		// <AudioVisualization layer={layer}/>
 		return (
 			<div className={this.getClasses()} 
 				style={this.getStyle()}>
-				<Measures measureIds={layer.measure_ids} />
-				<AudioVisualization layer={layer}/>
+				<Measures layer={layer} />
 				<EditLayer layerId={layer.id} />
 			</div>
 		);

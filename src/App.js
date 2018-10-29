@@ -8,6 +8,8 @@ import { faSave, faPlay, faPause, faPlayCircle,
 	faArrowRight, faBars } from '@fortawesome/free-solid-svg-icons'
 import { AudioVis } from './utils/variables'
 import Tone from 'tone'
+import LoginManager from './Account/LoginManager'
+import Topbar from './Stories/Topbar'
 
 AudioVis.meter = new Tone.Meter();
 AudioVis.fft = new Tone.FFT(32);
@@ -17,13 +19,16 @@ library.add(faSave, faPlay, faPause, faPlayCircle, faPauseCircle,
 	faArrowRight, faBars)
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-	  	<RouteHandler location={this.props.location} />
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div className="App">
+				<LoginManager location={this.props.location}>
+					<Topbar />
+					<RouteHandler />
+				</LoginManager>
+			</div>
+		);
+	}
 }
 
 export default App;

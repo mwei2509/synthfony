@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SettingControls from '../../ReusableComponents/SettingControls'
 import SelectOptions from '../../Atoms/SelectOptions'
 import { getNewPlayer, getPlayerTypeOptions } from '../PlayersAndEffects/Load';
-import Piano from '../../Instruments/Piano'
-import Drums from '../../Instruments/Drums'
+import Piano from '../Instruments/Piano'
+import Drums from '../Instruments/Drums'
 
 export default class CreateLayerModal extends Component {
 	constructor() {
@@ -24,7 +24,7 @@ export default class CreateLayerModal extends Component {
 		this.playNote = this.playNote.bind(this);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.changeInstrument(this.state.type)
 	}
 

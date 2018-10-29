@@ -8,6 +8,8 @@ let defaultCurrentSelection = {
 };
 export const manageCurrentSelection = (state = defaultCurrentSelection, action) => {
 	switch(action.type) {
+		case "NEW_PROJECT":
+			return defaultCurrentSelection;
 		case 'UPDATE_CURRENT_SELECTION':
 			return action.payload;
 		case 'SELECT_EFFECT':
@@ -31,6 +33,9 @@ export const manageCurrentSelection = (state = defaultCurrentSelection, action) 
 }
 
 let trackDetailDefaults = {
+	title: '',
+	project_id: null,
+	public: false,
 	bpm: '80',
 	beatsPerMeasure: 4,
 	pulsePerBeat: 4, // pulse per beats (aka divisions, hardcode for now)
@@ -38,47 +43,61 @@ let trackDetailDefaults = {
 	effect_ids: [],
 	interval: '16n',
 	loop: true,
-	divisions: {} // 0: ['div1', 'div2', 'div3']
+	lastUpdate: null
 };
+const getTimestamp = () => {
+	return new Date().getTime();
+}
 export const manageDetails = (state = trackDetailDefaults, action) => {
 	switch(action.type) {
+		case "NEW_PROJECT":
+			return trackDetailDefaults;
+		// case "SET_CURRENT_PROJECT":
+		// 	return {
+		// 		...state,
+		// 		...action.payload
+		// 	}
+		case "EDIT_TRACK_DETAIL":
+			return {
+				...state,
+				...action.payload
+			};
+		case "ADD_MEASURE":
+			return {
+				...state,
+				lastUpdate: getTimestamp()
+			}
 		case "ADD_NOTE":
-			let { div_index, division_id } = action.payload.newNote;
-			// check if div index is in the list
-			if (!state.divisions[div_index]) {
-				return {
-					...state,
-					divisions: {
-						...state.divisions,
-						[div_index]: [division_id]
-					}
-				};
+			return {...state,
+				lastUpdate: getTimestamp()
 			}
-			
-			if (!state.divisions[div_index].includes(division_id)) {
-				return {...state, 
-					divisions: {
-						...state.divisions,
-						[div_index]: [...state.divisions[div_index], division_id]
-					}
-				};
-			}
-			return state;
 		case "ADD_TRACK_BPM":
-			return {...state, bpm: action.payload};
+			return {...state, 
+				bpm: action.payload,
+				lastUpdate: getTimestamp()
+			};
 		case "ADD_EFFECT":
 			let { newEffect } = action.payload;
-			return {...state, effect_ids: [...state.effect_ids, newEffect.id]};
+			return {...state, 
+				effect_ids: [...state.effect_ids, newEffect.id],
+				lastUpdate: getTimestamp()
+			};
 		case "ADD_LAYER":
 			let { newLayer } = action.payload;
-			return {...state, layer_ids: [...state.layer_ids, newLayer.id]};
+			return {...state, 
+				layer_ids: [...state.layer_ids, newLayer.id],
+				lastUpdate: getTimestamp()
+			};
 		case "CATCH_UP_TRACK":
 			let { details } = action.payload;
-			return details;
+			return {...details,
+				lastUpdate: getTimestamp()
+			};
 		case "DEACTIVATE_LAYER":
 			return {
 				...state,
-				layer_ids: state.layer_ids.filter(layer_id => layer_id !== action.payload)
+				layer_ids: state.layer_ids.filter(layer_id => layer_id !== action.payload),
+				lastUpdate: getTimestamp()
 			};
 		default:
 			return state;

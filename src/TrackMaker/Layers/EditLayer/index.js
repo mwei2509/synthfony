@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { editLayerDetail, editLayerType, editLayerReady, deactivateLayer } from '../actions';
+import { editLayerDetail, editLayerType, editLayerReady, deactivateLayer, muteLayer, soloLayer } from '../actions';
 import CreateMeasure from '../../Measures/CreateMeasure';
 import LayerControls from './LayerControls';
 import PlayMode from './PlayMode';
@@ -33,13 +33,15 @@ class EditLayer extends Component {
 	}
 	getExpandedPlaymode() {
 		let { layer, track } = this.props;
-		let { deactivateLayer, editLayerDetail } = this.props;
+		let { deactivateLayer, muteLayer, soloLayer, editLayerDetail } = this.props;
 		return (
 			<div>
 				<div className="EditLayerDetails">
 					<ChangeInstrument layer={layer} />
 					<CreateMeasure layer={layer} />
 					<span className="icon" onClick={deactivateLayer.bind(this, layer.id)}><FontAwesomeIcon icon="trash" /></span>
+					<span className="icon" onClick={()=>{layer.player.part.mute = true;}}>mute</span>
+					<span className="icon" onClick={soloLayer.bind(this, layer.id)}>solo</span>
 				</div>
 				<PlayMode layer={layer} />
 				<LayerControls
@@ -66,14 +68,14 @@ class EditLayer extends Component {
 const mapStateToProps = (state, ownProps) => {
 	return ({
 		layer: state.track.layers[ownProps.layerId],
-		divisionSelected: !!state.track.currentSelection.currentDivision,
+		divisionSelected: state.track.currentSelection.currentDivision !== null,
 		selected: state.track.currentSelection.currentLayer === ownProps.layerId,
 	})
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		deactivateLayer, editLayerDetail
+		deactivateLayer, editLayerDetail, muteLayer, soloLayer
 	}, dispatch)
 }
 

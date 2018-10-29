@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LoadingDiv from '../Atoms/Loading';
+import LoadingDiv from '../../Atoms/Loading';
 import Keyboard from './PianoParts/Keyboard'
 
 export default class Piano extends Component {

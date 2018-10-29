@@ -39,7 +39,8 @@ export const addPeerUpdate = (broadcastJson, callback) => {
 			let layer = broadcast.layers[layerId];
 			let player = getNewPlayer(layer.type, callback.bind(this, layerId), {
 				effect_ids: layer.effect_ids	,
-				settings: layer.settings
+				settings: layer.settings,
+				noteParts: layer.noteParts
 			});
 			layer.player = player;
 		}
@@ -95,13 +96,13 @@ export const addBroadcastMeasure = (broadcastMeasure) => {
 		newBeats: broadcastMeasure.newBeats,
 		newDivisions: broadcastMeasure.newDivisions,
 		indexAt: broadcastMeasure.indexAt,
-		type: broadcastMeasure.type,
-		addedMeasures: broadcastMeasure.addedMeasures
+		type: broadcastMeasure.type
 	}, false)
 }
 
 
 export const addBroadcastNote = (broadcastNote) => {
+	debugger;
 	return addNoteToState(broadcastNote, false)
 }
 
@@ -112,7 +113,8 @@ export const addBroadcastNote = (broadcastNote) => {
 export const addBroadcastLayer = (broadcastedLayer, callback) => {
 	broadcastedLayer.player = getNewPlayer(broadcastedLayer.type, callback.bind(this, broadcastedLayer.id), {
 		effect_ids: broadcastedLayer.effects,
-		settings: broadcastedLayer.settings
+		settings: broadcastedLayer.settings,
+		noteParts: broadcastedLayer.noteParts
 	});
 	return addLayerToState(broadcastedLayer, false)
 }
@@ -122,7 +124,8 @@ export const addBroadcastEditLayer = (broadcast, callback) => {
 	let change = broadcast.change;
 	change.player = getNewPlayer(change.type, callback.bind(this, layerId), {
 		effect_ids: change.effect_ids,
-		settings: change.settings
+		settings: change.settings,
+		noteParts: change.noteParts
 	});
 	return addLayerDetailToState(layerId, change, false);
 }

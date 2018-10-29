@@ -4,6 +4,21 @@ import Player from './Player';
 import PlayerMap from './PlayerMap'
 import Effect from './Effect';
 import EffectMap from './EffectMap'
+import Tone from 'tone'
+
+export const masterLayer = {}
+
+export const clearPlayer = () => {
+	masterLayer.meter = null;
+	masterLayer.fft = null;
+	masterLayer.waveform = null;
+}
+
+export const initPlayer = () => {
+	masterLayer.meter = new Tone.Meter();
+	masterLayer.fft = new Tone.FFT(32);
+	masterLayer.waveform = new Tone.Waveform(1024);
+}
 
 /**
  * Creates and returns a new player object
@@ -13,7 +28,10 @@ import EffectMap from './EffectMap'
  * @returns {object}
  */
 export const getNewPlayer = (typeOfPlayer, onloadCallback, optionsOverride) => {
-	return new Player(typeOfPlayer, onloadCallback, optionsOverride);
+	if (!masterLayer.meter) {
+		initPlayer();
+	}
+	return new Player(typeOfPlayer, onloadCallback, optionsOverride, masterLayer);
 }
 
 /**
@@ -67,17 +85,3 @@ export const getEffectTypeOptions = () => {
 		};
 	});
 }
-
-/**
- * Creates new id and points SynthFony.Player[id] to player
- */
-// export const addPlayerToSynthFony = (player) => {
-// 	let playerId = generateIdWithPrefix('p');
-// 	SynthFony.Players[playerId] = player;
-// 	return playerId;
-// }
-// 
-// export const getNewPlayerId = (type, callback, override) => {
-// 	let player = getNewPlayer(type, callback, override);
-// 	return addPlayerToSynthFony(player);
-// }

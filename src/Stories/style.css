@@ -158,3 +158,16 @@ teal: 428589*/
 .icon:hover {
 	color: #9CD29E;
 }
+
+.Topbar a {
+	color: #000;
+	font-size: 14px;
+	text-decoration: none;
+	cursor: pointer;
+	display: inline-block;
+	padding: 4px 5px;
+	transition: .4s;
+}
+.Topbar a:hover {
+	background-color: #eee;
+}

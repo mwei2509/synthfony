@@ -3,29 +3,82 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { generateIdWithPrefix } from '../utils/functions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { saveTrack, editTrackDetail } from './actions'
+import { push } from 'react-router-redux'
+import Modal from '../Atoms/Modal'
+import InputForm from '../Atoms/InputForm'
 import './style.css';
 
 class SaveTrack extends Component {
 	constructor() {
 		super();
 		this.saveTrack = this.saveTrack.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	saveTrack() {
-		localStorage.setItem(generateIdWithPrefix('track'), JSON.stringify(this.props));
+		let { push, track, saveTrack, trackPlay } = this.props;
+		let trackJson = {
+			...track,
+			trackPlay: trackPlay,
+			layers: {},
+			effects: {}
+		};
+		delete trackJson.currentSelection;
+		delete trackJson.playback;
+		Object.keys(track.layers).forEach((layer_id) => {
+			trackJson.layers[layer_id] = {
+				...track.layers[layer_id],
+				player: null
+			}
+		})
+		Object.keys(track.effects).forEach((effect_id) => {
+			trackJson.effects[effect_id] = {
+				...track.effects[effect_id],
+				effect: null
+			}
+		})
+		saveTrack({
+			title: track.details.title,
+			public: track.details.public,
+			track_json: JSON.stringify(trackJson)
+		}, (data) => {
+			let { user, slug } = data.data;
+			push(`/u/${user.username}/${slug}/edit`);
+		});
 	}
 	
 	loadTrack() {
 		debugger;
 	}
-
+	renderToggleModal() {
+		return (
+			<span>
+				<FontAwesomeIcon icon="save" />
+				{this.props.expanded ? <span className="sidebar-label">Save Track</span> : null}
+			</span>
+		)
+	}
+	handleChange(field, value) {
+		let { editTrackDetail } = this.props;
+		editTrackDetail({[field]: value})
+	}
 	render() {
 		return (
 			<div className='SaveTrack'>
-				<span className="icon" onClick={this.saveTrack}>
-					<FontAwesomeIcon icon="save" />
-					{this.props.expanded ? <span className="sidebar-label">Save Track</span> : null}
-				</span>
+				<Modal button={this.renderToggleModal()}>
+					<InputForm
+						fields={[
+							{
+								name: 'title', 
+								value: this.props.track.details.title,
+								type: 'input'
+							}
+						]}
+						onChange={this.handleChange}
+						/>
+					<button onClick={this.saveTrack}>SAVE</button>
+				</Modal>
 			</div>
 		);
 	}
@@ -33,15 +86,14 @@ class SaveTrack extends Component {
 
 const mapStateToProps = (state) => {
 	return ({
-		details: state.track.details,
-		layers: state.track.layers,
-		measures: state.track.measures,
-		beats: state.track.beats,
+		track: state.track,
+		trackPlay: state.track.playback.trackPlay
 	})
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
+		saveTrack, editTrackDetail, push
 	}, dispatch)
 }
 

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Layer from './Layer';
+import { masterLayer } from '../PlayersAndEffects/Load'
+import AudioVisualization from '../../AudioVisualization/index'
 import CreateLayer from './CreateLayer'
 import './style.css'
 
@@ -20,6 +22,9 @@ class Layers extends Component {
 	}
 
 	render() {
+		// <AudioVisualization 
+		// 	layer={{player: masterLayer}}
+		// 	size="large"/>
 		return (
 			<div className='Layers'>
 				{this.getLayers()}

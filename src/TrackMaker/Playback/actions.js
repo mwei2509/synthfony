@@ -11,3 +11,10 @@ export const updateIndices = (indices) => {
 		payload: indices
 	};
 }
+
+export const updateTrackPlay = (trackPlay) => {
+	return {
+		type: 'UPDATE_TRACK_PLAY',
+		payload: trackPlay
+	}
+}

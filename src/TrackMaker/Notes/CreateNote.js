@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { addNote } from './actions';
 import { updateSelection } from '../actions';
 import Modal from '../../Atoms/Modal'
-import Piano from '../../Instruments/Piano';
+import Piano from '../Instruments/Piano';
 
 class CreateNote extends Component {
 	constructor() {
@@ -13,15 +13,15 @@ class CreateNote extends Component {
 		this.updateSelection = this.updateSelection.bind(this);
 	}
 	updateSelection() {
-		let { division, updateSelection } = this.props;
-		updateSelection({
-			currentLayer: division.layer_id,
-			currentMeasure: division.measure_id,
-			currentBeat: division.beat_id,
-			currentDivision: division.id,
-			currentNote: null,
-			currentEffect: null
-		})
+		// let { division, updateSelection } = this.props;
+		// updateSelection({
+		// 	currentLayer: division.layer_id,
+		// 	currentMeasure: division.measure_id,
+		// 	currentBeat: division.beat_id,
+		// 	currentDivision: division.id,
+		// 	currentNote: null,
+		// 	currentEffect: null
+		// })
 	}
 	render() {
 		let { selected } = this.props;

@@ -11,6 +11,14 @@ export const generateIdWithPrefix = (prefix) => {
 	return uniqueId;
 }
 
+export const makeArrayWithIndex = (num) => {
+	let arr = [];
+	for (let i = 0; i < Number(num); i++) {
+		arr.push(i);
+	}
+	return arr;
+}
+
 function idNotUnique(id) {
 	return allIds.includes(id);
 }

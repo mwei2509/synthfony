@@ -41,8 +41,7 @@ export const manageSocket = (state = defaultSocket, action) => {
 				newBeats: action.payload.newBeats,
 				newDivisions: action.payload.newDivisions,
 				indexAt: action.payload.indexAt,
-				type: action.payload.type,
-				addedMeasures: action.payload.addedMeasures
+				type: action.payload.type
 			};
 			state.socket.emit('add_measure', JSON.stringify(formattedMeasure))
 			return state;

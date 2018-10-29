@@ -12,11 +12,13 @@ import { isObject } from '../../utils/functions'
  * @returns {object} settings
  */
 class Player {
-	constructor(type, callback, override) {
+	constructor(type, callback, override, masterLayer) {
+		this.masterLayer = masterLayer;
 		this.callback = callback;
 		this.defaultOverride = {
 			settings: {},
-			effect_ids: []
+			effect_ids: [],
+			noteParts: []
 		};
 		this.override = {
 			...this.defaultOverride,
@@ -35,6 +37,7 @@ class Player {
 		this.getVisuals();
 		this.connectEffects();
 		this.connectToAmp();
+		this.connectNotes();
 	}
 
 	setUpPlayer = () => {
@@ -52,7 +55,7 @@ class Player {
 		this.meter = new Tone.Meter();
 		this.fft = new Tone.FFT(32);
 		this.waveform = new Tone.Waveform(1024);
-		this.player.connect(this.meter).fan(this.fft, this.waveform);
+		this.player.connect(this.masterLayer.meter).connect(this.meter).fan(this.fft, this.masterLayer.fft, this.waveform, this.masterLayer.waveform);
 	}
 	
 	connectEffects = () => {
@@ -61,6 +64,22 @@ class Player {
 			let effect = SynthFony.Effects[effect_id];
 			this.player.connect(effect.player);
 		})
+	}
+
+	connectNotes = () => {
+		this.noteParts = this.override.noteParts || [];
+		this.part = new Tone.Part(this.playPart, this.noteParts)
+	}
+
+	setPlayerCallback = (callback) => {
+		this.playerCallback = callback;
+	}
+
+	playPart = (time, value) => {
+		if (typeof this.playerCallback === 'function') {
+			this.playerCallback();
+		}
+		this.trigger(value.note, value.duration, time)
 	}
 
 	addEffect = (effect_id) => {

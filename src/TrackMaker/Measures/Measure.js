@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { makeArrayWithIndex } from '../../utils/functions'
 import Beat from '../Beats/Beat';
 import './style.css';
 
 class Measure extends Component {
 	getBeats() {
-		let { measure } = this.props
-		return measure.beat_ids.map((beatId, index) => {
-			return <Beat key={index} beatId={beatId} />
-		});
+		let { layerId, measureIndex, beatsPerMeasure } = this.props
+		return makeArrayWithIndex(beatsPerMeasure).map((index) => {	
+			return <Beat
+				layerId={layerId}
+				measureIndex={measureIndex}
+				beatIndex={index}
+			/>
+		})
+		// return measure.beat_ids.map((beatId, index) => {
+		// 	return <Beat measureIndex={measureIndex} beatIndex={index} beatId={beatId} />
+		// });
 	}
 
 	render() {
-		let {selected} = this.props;
+		let { selected } = this.props;
 		return (
 			<div className={`Measure ${selected ? 'Expanded':''}`}>
 				{this.getBeats()}
@@ -23,10 +31,13 @@ class Measure extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-	let selected = state.track.currentSelection.currentMeasure === ownProps.measureId;
+	let layerSelected = state.track.currentSelection.currentLayer === ownProps.layerId;
+	let measureSelected = state.track.currentSelection.currentMeasure === ownProps.measureIndex;
+	let selected = layerSelected && measureSelected;
+
 	return ({
-		measure: state.track.measures[ownProps.measureId],
-		selected: selected
+		selected: selected,
+		beatsPerMeasure: state.track.details.beatsPerMeasure
 	})
 }
 

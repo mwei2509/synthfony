@@ -21,7 +21,8 @@ class ChangeInstrument extends Component {
 		let { editLayerType } = this.props;
 		editLayerType(layer, type, this.playerReady.bind(this, layer.id), {
 			// settings: layer.settings,
-			effect_ids: layer.effect_ids
+			effect_ids: layer.effect_ids,
+			noteParts: layer.noteParts
 		});
 	}
 	render() {

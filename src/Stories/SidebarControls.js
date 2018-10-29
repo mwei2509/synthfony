@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Playback from '../Playback/index';
+import Playback from '../TrackMaker/Playback/index';
 import TrackDetails from '../TrackMaker/TrackDetails'
 import CreateLayer from '../TrackMaker/Layers/CreateLayer';
 import CreateEffect from '../TrackMaker/Effects/CreateEffect';
@@ -22,6 +22,7 @@ export default class SidebarControls extends Component {
 				<Playback expanded={this.state.expanded} />
 				<TrackDetails expanded={this.state.expanded} />
 				<CreateLayer expanded={this.state.expanded} />
+				<CreateEffect expanded={this.state.expanded} />
 			</div>
 		);
 	}

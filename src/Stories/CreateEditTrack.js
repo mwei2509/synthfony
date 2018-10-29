@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SidebarControls from './SidebarControls';
-import Layers from '../TrackMaker/Layers/Layers';
+import CreateTrack from '../TrackMaker/CreateTrack';
 import './style.css';
 
 export default class CreateEditTrackWrapper extends Component {
@@ -8,7 +8,7 @@ export default class CreateEditTrackWrapper extends Component {
 		return (
 			<div className='CreateEditTrack container'>
 				<SidebarControls />
-				<Layers />
+				<CreateTrack {...this.props} />
 			</div>
 		);
 	}

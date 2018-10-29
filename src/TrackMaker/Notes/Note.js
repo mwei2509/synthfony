@@ -19,6 +19,7 @@ class Note extends Component {
 	handleClick(e) {
 		e.stopPropagation();
 		let { note, updateSelection } = this.props;
+		debugger
 		let selected = this.isSelected();
 		updateSelection({
 			currentLayer: note.layer_id,
@@ -80,8 +81,7 @@ class Note extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return ({
-		currentSelection: state.track.currentSelection,
-		note: state.track.notes[ownProps.noteId]
+		currentSelection: state.track.currentSelection
 	})
 }
 

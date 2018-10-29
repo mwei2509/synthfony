@@ -8,8 +8,6 @@ export default class AudioVisualization extends Component {
 		super(props)
 		this.canvas = React.createRef();
 		this.loop = this.loop.bind(this);
-		this.height = 20;
-		this.width = 900;
 	}
 	getContext() {
 		let canvas = this.canvas.current;
@@ -19,6 +17,13 @@ export default class AudioVisualization extends Component {
 		return false;
 	}
 	componentDidMount() {
+		if (this.props.size === 'large') {
+			this.height = 100;
+			this.width = 900;
+		} else {
+			this.height = 20;
+			this.width = 900;
+		}
 		this.loop();
 	}
 	drawFFT(values) {
@@ -37,28 +42,30 @@ export default class AudioVisualization extends Component {
 			}
 		}
 	}
-	drawWaveForm(values) {
-		let canvas = this.canvas.current;
-		if (canvas) {			
-			let waveContext = canvas.getContext('2d');
+	drawWaveForm() {
+		if (this.context) {			
+			let { player } = this.props.layer;
+			let waveform = player.waveform;
+			let values = waveform.getValue();
+			console.log(values);	
 			let canvasWidth = this.width;
 			let canvasHeight = this.height;
-			let waveformGradient = waveContext.createLinearGradient(0, 0, canvasWidth, canvasHeight);
+			let waveformGradient = this.context.createLinearGradient(0, 0, canvasWidth, canvasHeight);
 			waveformGradient.addColorStop(0, "#428589");
 			waveformGradient.addColorStop(1, "#5698C2");
-			waveContext.clearRect(0, 0, canvasWidth, canvasHeight);
-			waveContext.beginPath();
-			waveContext.lineJoin = "round";
-			waveContext.lineWidth = 2;
-			waveContext.strokeStyle = waveformGradient;
-			waveContext.moveTo(0, (values[0] / 255) * canvasHeight);
+			this.context.clearRect(0, 0, canvasWidth, canvasHeight);
+			this.context.beginPath();
+			this.context.lineJoin = "round";
+			this.context.lineWidth = 2;
+			this.context.strokeStyle = waveformGradient;
+			this.context.moveTo(0, (values[0] / 255) * canvasHeight);
 			for (var i = 1, len = values.length; i < len; i++){
 				var val = (values[i] + 1) / 2;
 				var x = canvasWidth * (i / len);
 				var y = val * canvasHeight;
-				waveContext.lineTo(x, y);
+				this.context.lineTo(x, y);
 			}
-			waveContext.stroke();
+			this.context.stroke();
 		}
 	}
 	drawMeter() {
@@ -91,6 +98,7 @@ export default class AudioVisualization extends Component {
 		// this.drawWaveForm(waveformValues);
 		this.makeGradient();
 		this.drawMeter();
+		// this.drawWaveForm();
 	}
 	render() {
 		return <div className="AudioVisualization">

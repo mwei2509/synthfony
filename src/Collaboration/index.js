@@ -20,6 +20,7 @@ class Collab extends Component {
 	}
 	
 	componentDidMount() {
+		debugger;
 		this.props.connectToSocket()
 		window.setTimeout(this.listen);
 	}

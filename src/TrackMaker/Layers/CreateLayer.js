@@ -29,7 +29,7 @@ class CreateLayer extends Component {
 	shouldAddNewMeasure(prevProps, thisProps) {
 		return prevProps.currentLayer !== thisProps.currentLayer && 
 			isObject(thisProps.currentLayer) && 
-			thisProps.currentLayer.measure_ids.length === 0 &&
+			thisProps.currentLayer.numMeasures === 0 &&
 			this.isFromCurrentUser(thisProps);
 	}
 	isFromCurrentUser(thisProps) {

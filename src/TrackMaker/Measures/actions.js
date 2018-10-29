@@ -1,18 +1,13 @@
 import { generateIdWithPrefix } from '../../utils/functions';
 import { batchActions } from 'redux-batched-actions';
 
-export const addMeasure = (layer, layerId) => {
-	layerId = layerId || layer.id;
-	let newMeasure = buildNewMeasure(layerId);
-	let newBeats = buildNewBeats(newMeasure);
-	let newDivisions = buildNewDivisions(newBeats, layer);
+export const addMeasure = (layer) => {
+	// let newMeasure = buildNewMeasure(layer);
+	// let newBeats = buildNewBeats(newMeasure);
+	// let newDivisions = buildNewDivisions(newBeats);
 	return addMeasureToState({
-		newMeasure: newMeasure,
-		newBeats: newBeats,
-		newDivisions: newDivisions,
-		indexAt: 'last',
-		type: 'normal',
-		addedMeasures: layer ? (layer.measure_ids.length + 1) : 1
+		addMeasureToLayer: layer.id,
+		newNumMeasures: layer.numMeasures + 1
 	}, true)
 }
 
@@ -25,38 +20,19 @@ export const addMeasureToState = (payload, fromSelf) => {
 	var actions = [
 		{
 			type: 'ADD_MEASURE',
-			payload: {
-				newMeasure: payload.newMeasure,
-				newBeats: payload.newBeats,
-				newDivisions: payload.newDivisions,
-				indexAt: payload.indexAt,
-				type: payload.type
-			}
-		},
-		{
-			type: 'ADD_MEASURE_TO_TRACK',
-			payload: {
-				addedMeasures: payload.addedMeasures
-			}
+			payload: payload
 		}
 	];
 	if (fromSelf) {
 		actions.push({
 			type: 'ADD_MEASURE_TO_BROADCAST',
-			payload: {
-				newMeasure: payload.newMeasure,
-				newBeats: payload.newBeats,
-				newDivisions: payload.newDivisions,
-				indexAt: payload.indexAt,
-				type: payload.type,
-				addedMeasures: payload.addedMeasures
-			}
+			payload: payload
 		})
 		actions.push({
 			type: 'UPDATE_CURRENT_SELECTION',
 			payload: {
-				currentLayer: payload.newMeasure.layer_id,
-				currentMeasure: payload.newMeasure.id,
+				currentLayer: payload.addMeasureToLayer,
+				currentMeasure: payload.newNumMeasures - 1, // length minus 1 = index;
 				currentBeat: null,
 				currentDivision: null,
 				currentNote: null,
@@ -67,18 +43,20 @@ export const addMeasureToState = (payload, fromSelf) => {
 	return batchActions(actions);
 }
 
-const buildNewMeasure = (layerId, type) => {
+const buildNewMeasure = (layer) => {
+	let layerId = layer.id;
+	let newMeasureIndex = layer.numMeasures + 1; // added measure
 	let measure = {
 		layer_id: layerId,
-		id: generateIdWithPrefix('M'), 
+		id: `${layerId}|${newMeasureIndex}`,
 		beat_ids: [], 
-		type: type || 'normal', 
+		type: 'normal', 
 		time_signature: '4/4', 
 		key: 'none' 
 	};
 	if (measure.time_signature === '4/4') {
 		for (let i = 0; i < 4; i++) {
-			let new_beat = generateIdWithPrefix('B');
+			let new_beat = `${layerId}|${newMeasureIndex}|${i}`
 			measure.beat_ids.push(new_beat);
 		}
 	}
@@ -95,7 +73,7 @@ const buildNewBeats = (newMeasure) => {
 			division_ids: [] 
 		};
 		for (let i = 0; i < 4; i++) {
-			let new_division = generateIdWithPrefix('D');
+			let new_division = `${beat_id}|${i}`;
 			beat.division_ids.push(new_division);
 		}
 		newBeats[beat_id] = beat;
@@ -103,21 +81,18 @@ const buildNewBeats = (newMeasure) => {
 	return newBeats;
 }
 
-const buildNewDivisions = (newBeats, layer) => {
+const buildNewDivisions = (newBeats) => {
 	let newDivisions = {}
-	let divIndex = layer ? layer.measure_ids.length * 4 * 4:0; // change with meter
 	for (var beat_id in newBeats) {
 		let beat = newBeats[beat_id];
 		beat.division_ids.forEach((div_id) => {
 			let division = {
-				div_index: divIndex, //index of the div in relation to the track
 				id: div_id,
 				beat_id: beat.id,
 				measure_id: beat.measure_id,
 				layer_id: beat.layer_id,
 				note_ids: [] 
 			};
-			divIndex += 1
 			newDivisions[div_id] = division;
 		});
 	}

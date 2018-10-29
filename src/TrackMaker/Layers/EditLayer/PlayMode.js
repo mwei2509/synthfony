@@ -5,8 +5,8 @@ import { addNote, editNote } from '../../Notes/actions';
 import { updateSelection } from '../../actions';
 import { addMeasure } from '../../Measures/actions';
 import { editLayerDetail } from '../actions';
-import Piano from '../../../Instruments/Piano';
-import Drums from '../../../Instruments/Drums';
+import Piano from '../../Instruments/Piano';
+import Drums from '../../Instruments/Drums';
 import AudioVisualization from '../../../AudioVisualization/index'
 import LayerControls from './LayerControls'
 import { SynthFony } from '../../../utils/variables'
@@ -29,19 +29,30 @@ class PlayMode extends Component {
 			playMode: !this.state.playMode
 		})
 	}
+	getTrackTime() {
+		let { currentMeasure, currentBeat, currentDivision } = this.props.currentSelection;
+		return `${currentMeasure}:${currentBeat}:${currentDivision}`;
+	}
 	playNote(note) {
-		let { layer, beats, measures, divisions, addNote, editNote } = this.props;
+		let { layer, addNote, editNote } = this.props;
 		let { stop } = this.props.playback;
 		let { playMode, defaultInterval } = this.state;
 		let { currentDivision, currentNote } = this.props.currentSelection;
 
 		if (!stop && playMode) {
-			let division = this.getDivision();
-			addNote({note: note, duration: this.state.defaultDuration}, division);
+			// let division = this.getDivision();
+			// addNote({note: note, duration: this.state.defaultDuration}, division);
 		} else if (currentNote) {
-			editNote(currentNote, {note: note});
-		} else if (currentDivision) {
-			addNote({note: note, duration: this.state.defaultDuration}, divisions[currentDivision]);
+			// editNote(currentNote, {note: note});
+		} else if (currentDivision !== null) {
+			let newNote = {
+				layer_id: layer.id,
+				time: this.getTrackTime(),
+				note: note,
+				duration: this.state.defaultDuration
+			}
+			layer.player.part.add(newNote);
+			addNote(newNote);
 			this.selectNextInterval()
 		}
 		layer.player.trigger(note, this.state.defaultDuration);
@@ -50,43 +61,45 @@ class PlayMode extends Component {
 		let { addMeasure } = this.props;
 		let { layer } = this.props;
 	
-		let nextDivisionId = this.getNextDivisionId();
-		if (nextDivisionId.indexOf('new_measure') > -1) {
-			let offset = Number(nextDivisionId.split('|')[1]);
-			addMeasure(layer, layer.id);
+		let currentTime = this.getNextDivisionId();
+		if (currentTime === 'new_measure') {
+			addMeasure(layer);
 			window.setTimeout(() => {
-				this.selectNextInterval(offset);
+				this.selectNextInterval();
 			})
 		} else {
 			window.setTimeout(() => {
-				this.setDivision(nextDivisionId);
+				this.setDivision(currentTime);
 			});
 		}
 	}
-	setDivision(id) {
-		let { updateSelection, divisions } = this.props;
-		let division = divisions[id];
+	setDivision(currentTime) {
+		let { layer } = this.props;
+		let { currentDivision, currentMeasure, currentBeat} = currentTime;
+		let { updateSelection } = this.props;
 		updateSelection({
-			currentLayer: division.layer_id,
-			currentMeasure: division.measure_id,
-			currentBeat: division.beat_id,
-			currentDivision: division.id,
+			currentLayer: layer.id,
+			currentMeasure: currentMeasure,
+			currentBeat: currentBeat,
+			currentDivision: currentDivision,
 			currentNote: null
 		});
 		
 	}
-	getNextDivisionId(offset) {
-		offset = offset || 0;
+	getNextDivisionId() {
 		let { defaultInterval } = this.state;
-		let { layer, measures, beats, divisions } = this.props;
+		let { details, layer } = this.props;
 		let { currentMeasure, currentBeat, currentDivision } = this.props.currentSelection;
+		let currentTime = {
+			currentMeasure: currentMeasure,
+			currentBeat: currentBeat || 0,
+			currentDivision: currentDivision || 0
+		};
+
 		if (defaultInterval === '0n') {
-			return currentDivision;
+			return currentTime;
 		}
-		let nextBeat, nextId;
-		if (defaultInterval === '16n' || defaultInterval === '8n') {
-			// if currentBeat is null, new measure was just made
-		}
+
 		let increment = ((i)=>{
 			switch(i) {
 				case '16n': return 1;
@@ -97,48 +110,57 @@ class PlayMode extends Component {
 				default: return 1;
 			}
 		})(defaultInterval);
-		if (currentBeat === null) {
-			nextBeat = measures[currentMeasure].beat_ids[offset];
-			return beats[nextBeat].division_ids[offset];
+
+		let { pulsePerBeat, beatsPerMeasure } = details;
+		let nextDivision = this.getNextInLine(pulsePerBeat, currentDivision, increment);
+		if (nextDivision !== 'next') {
+			currentTime.currentDivision = nextDivision;
+			return currentTime;
 		}
-		// get next 16th note
-		nextId = this.getNextInLine(beats[currentBeat].division_ids, currentDivision, increment);
-		if (nextId !== 'next') {
-			return nextId;
+		let nextBeat = this.getNextInLine(beatsPerMeasure, currentBeat);
+		if (nextBeat !== 'next'){
+			currentTime.currentBeat = nextBeat;
+			currentTime.currentDivision = 0;
+			return currentTime;
 		}
-		// get next beat
-		nextId = this.getNextInLine(measures[currentMeasure].beat_ids, currentBeat)
-		if (nextId !== 'next') {
-			return beats[nextId].division_ids[offset];
+		let nextMeasure = this.getNextInLine(layer.numMeasures, currentMeasure);
+		if (nextMeasure !== 'next') {
+			currentTime.currentMeasure = nextMeasure;
+			currentTime.currentBeat = 0;
+			currentTime.currentDivision = 0;
+			return currentTime;
 		}
-		// get next measure
-		nextId = this.getNextInLine(layer.measure_ids, currentMeasure);
-		if (nextId !== 'next') {
-			nextBeat = measures[nextId].beat_ids[offset];
-			return beats[nextBeat].division_ids[offset];
-		}
-		return 'new_measure|0';
+		return 'new_measure';
 	}
 
-	getNextInLine(arrayOfIds, currentId, increment) {
+	getNextInLine(length, index, increment) {
 		increment = increment || 1;
-		let index = arrayOfIds.indexOf(currentId);
-		if ((index + increment) <= arrayOfIds.length - 1) {
-			return arrayOfIds[index + increment];
+		let nextIndex = (Number(index) + Number(increment));
+		if (nextIndex < length) {
+			return nextIndex
 		}
 		return 'next';
 	}
 
+	// getNextInLine(arrayOfIds, currentId, increment) {
+	// 	increment = increment || 1;
+	// 	let index = arrayOfIds.indexOf(currentId);
+	// 	if ((index + increment) <= arrayOfIds.length - 1) {
+	// 		return arrayOfIds[index + increment];
+	// 	}
+	// 	return 'next';
+	// }
+
 	// playmode - get division based on currentTrackDivision
-	getDivision() {
-		let { layer, measures, beats, divisions } = this.props;
-		let { currentTrackDivision } = this.props.playback;
-		let { measureIndex, beatIndex, divIndex } = this.getMeasureIndex(currentTrackDivision, layer.measure_ids.length);
-		let measureId = layer.measure_ids[measureIndex];
-		let beatId = measures[measureId].beat_ids[beatIndex];
-		let divId = beats[beatId].division_ids[divIndex];
-		return divisions[divId];
-	}
+	// getDivision() {
+	// 	let { layer, measures, beats, divisions } = this.props;
+	// 	let { currentTrackDivision } = this.props.playback;
+	// 	let { measureIndex, beatIndex, divIndex } = this.getMeasureIndex(currentTrackDivision, layer.measure_ids.length);
+	// 	let measureId = layer.measure_ids[measureIndex];
+	// 	let beatId = measures[measureId].beat_ids[beatIndex];
+	// 	let divId = beats[beatId].division_ids[divIndex];
+	// 	return divisions[divId];
+	// }
 	getDefaultTime(type) {
 		return <div className={type}>
 				<label>{type}</label>
@@ -153,29 +175,29 @@ class PlayMode extends Component {
 				</select>
 			</div>
 	}
-	getMeasureIndex(divIndex, numMeasures) {
-		// let beatsPerMeasure = 4;
-		let ppb = 4; // pulse per beat
-		let ppm = 16; // pulse per measure, aka div per measures
-		for (let i = 0; i < numMeasures; i++) {
-			let min = i * ppm; //inclusive
-			let max = ((i+1) * ppm) - 1; //inclusive
-			if (divIndex >= min && divIndex <= max) {
-				let numBeats = 4; // 4 beats per measure
-				for (let k = 0; k < numBeats; k++) {
-					let minBeat = (k * ppb) + min;
-					let maxBeat = (((k+1) * ppb) - 1) + min;
-					if (divIndex >= minBeat && divIndex <= maxBeat) {
-						return {
-							measureIndex: i,
-							beatIndex: k,
-							divIndex: divIndex - minBeat
-						}
-					}
-				}
-			}
-		}
-	}
+	// getMeasureIndex(divIndex, numMeasures) {
+	// 	// let beatsPerMeasure = 4;
+	// 	let ppb = 4; // pulse per beat
+	// 	let ppm = 16; // pulse per measure, aka div per measures
+	// 	for (let i = 0; i < numMeasures; i++) {
+	// 		let min = i * ppm; //inclusive
+	// 		let max = ((i+1) * ppm) - 1; //inclusive
+	// 		if (divIndex >= min && divIndex <= max) {
+	// 			let numBeats = 4; // 4 beats per measure
+	// 			for (let k = 0; k < numBeats; k++) {
+	// 				let minBeat = (k * ppb) + min;
+	// 				let maxBeat = (((k+1) * ppb) - 1) + min;
+	// 				if (divIndex >= minBeat && divIndex <= maxBeat) {
+	// 					return {
+	// 						measureIndex: i,
+	// 						beatIndex: k,
+	// 						divIndex: divIndex - minBeat
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
 	
 	getInstrument() {
 		let { layer } = this.props;
@@ -204,12 +226,9 @@ class PlayMode extends Component {
 
 const mapStateToProps = (state) => {
 	return ({
-		playback: state.playback,
+		playback: state.track.playback,
 		currentSelection: state.track.currentSelection,
-		divisions: state.track.divisions,
-		measures: state.track.measures,
 		layers: state.track.layers,
-		beats: state.track.beats,
 		details: state.track.details
 	})
 }

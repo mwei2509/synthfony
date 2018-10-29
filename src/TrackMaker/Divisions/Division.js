@@ -14,54 +14,61 @@ class Division extends Component {
 	}
 
 	isBeingPlayed() {
-		let { division, playback } = this.props;
-		if (division.div_index === playback.currentTrackDivision) {
-			return true;
-		}
-		return false;
+		// let { division, playback } = this.props;
+		// do bars:beats:16
+		// return false;
 	}
 
 	toggleSelect(e) {
 		e.stopPropagation();
-		let { updateSelection, currentSelection, division } = this.props;
-		if (currentSelection.currentDivision === division.id) {
+		let { updateSelection, currentSelection } = this.props;
+		let { layerId, measureIndex, beatIndex, divisionIndex } = this.props;
+
+		if (currentSelection.currentDivision === divisionIndex) {
 			updateSelection({
-				currentLayer: division.layer_id,
-				currentMeasure: division.measure_id,
-				currentBeat: division.beat_id,
+				currentLayer: layerId,
+				currentMeasure: measureIndex,
+				currentBeat: beatIndex,
 				currentDivision: null,
 				currentNote: null
 			})
 		} else {
 			updateSelection({
-				currentLayer: division.layer_id,
-				currentMeasure: division.measure_id,
-				currentBeat: division.beat_id,
-				currentDivision: division.id,
+				currentLayer: layerId,
+				currentMeasure: measureIndex,
+				currentBeat: beatIndex,
+				currentDivision: divisionIndex,
 				currentNote: null
 			})
 		}
 	}
-	
+
 	isSelected() {
-		let { division } = this.props;
-		let { currentDivision } = this.props.currentSelection;
-		return division.id === currentDivision;
+		let { layerId, measureIndex, beatIndex, divisionIndex } = this.props;
+		let { currentLayer, currentMeasure, currentBeat, currentDivision } = this.props.currentSelection;
+		return currentLayer === layerId && 
+			currentMeasure === measureIndex &&
+			currentBeat === beatIndex &&
+			currentDivision === divisionIndex;
 	}
+	
 	showNotes() {
-		let { division } = this.props;
-		return division.note_ids.map((note_id, index) => {
-			return <Note key={index} noteId={note_id} />
+		let { layer, measureIndex, beatIndex, divisionIndex } = this.props;
+		let divisionTime = `${measureIndex}:${beatIndex}:${divisionIndex}`;
+		return layer.noteParts.filter((note) => {
+			return note.time === divisionTime;
+		}).map((note, index) => {
+			return <Note
+				note={note}
+				noteIndex={index} />
 		});
 	}
 	render() {
-		let { division, playback } = this.props;
 		let selected = this.isSelected();
 		let beingPlayed = this.isBeingPlayed();
 		return (
 			<div className={'Division ' + (beingPlayed ? 'being-played ':'') + (selected?'selected ':'')}
-				onClick={this.toggleSelect}
-				data-division={division.id}>
+				onClick={this.toggleSelect}>
 				
 				{this.showNotes()}
 			</div>
@@ -71,13 +78,9 @@ class Division extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-	let division = state.track.divisions[ownProps.divisionId];
-	let layer = state.track.layers[division.layer_id];
 	return ({
-		division: division,
-		layer: layer,
-		currentSelection: state.track.currentSelection,
-		playback: state.playback
+		layer: state.track.layers[ownProps.layerId],
+		currentSelection: state.track.currentSelection
 	})
 }
 

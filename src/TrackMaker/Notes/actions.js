@@ -1,13 +1,7 @@
 import { generateIdWithPrefix } from '../../utils/functions';
 import { batchActions } from 'redux-batched-actions';
 
-export const addNote = (newNote, division) => {
-	newNote.id = generateIdWithPrefix('N');
-	newNote.division_id = division.id;
-	newNote.beat_id = division.beat_id;
-	newNote.measure_id = division.measure_id;
-	newNote.layer_id = division.layer_id;
-	newNote.div_index = division.div_index;
+export const addNote = (newNote) => {
 	return addNoteToState(newNote, true);
 }
 
@@ -43,6 +37,11 @@ export const addNoteToState = (newNote, fromSelf) => {
 		}
 	}]
 	if (fromSelf) {
+		let timeArr = newNote.time.split(':');
+		let measureIndex = timeArr[0];
+		let beatIndex = timeArr[1];
+		let divisionIndex = timeArr[2];
+	
 		actions.push({
 			type: 'ADD_NOTE_TO_BROADCAST',
 			payload: {
@@ -53,9 +52,9 @@ export const addNoteToState = (newNote, fromSelf) => {
 			type: 'UPDATE_CURRENT_SELECTION',
 			payload: {				
 				currentLayer: newNote.layer_id,
-				currentMeasure: newNote.measure_id,
-				currentBeat: newNote.beat_id,
-				currentDivision: newNote.division_id,
+				currentMeasure: Number(measureIndex),
+				currentBeat: Number(beatIndex),
+				currentDivision: Number(divisionIndex),
 				currentNote: null,
 				currentEffect: null
 			}

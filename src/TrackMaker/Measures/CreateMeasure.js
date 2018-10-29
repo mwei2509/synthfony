@@ -6,28 +6,20 @@ import { addMeasure } from './actions';
 class CreateMeasure extends Component {
 	constructor() {
 		super();
-		this.addMeasure = this.addMeasure.bind(this);
-	}
-
-	addMeasure() {
-		let { addMeasure } = this.props;
-		let { layer } = this.props;
-
-		addMeasure(layer);
 	}
 
 	render() {
+		let { addMeasure, layer } = this.props;
 		return (
 			<div className='CreateMeasure'>
-				<button onClick={this.addMeasure.bind(this)}>Add Measure</button>
+				<button onClick={addMeasure.bind(this, layer)}>Add Measure</button>
 			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state) => {
-	return ({
-	})
+	return ({})
 }
 
 const mapDispatchToProps = (dispatch) => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Collab from '../Collaboration/index';
 import Notifications from '../Notifications/index';
-import Layers from '../TrackMaker/Layers/Layers';
+import CreateTrack from '../TrackMaker/CreateTrack';
 import SidebarControls from './SidebarControls';
 
 export default class CollabTrack extends Component {
@@ -10,9 +10,9 @@ export default class CollabTrack extends Component {
 		// collab tracks should have notifications layer + comment/update feeds
 		return (
 			<Collab {...this.props}>
-				<SidebarControls />
 				<Notifications />
-				<Layers />
+				<SidebarControls />
+				<CreateTrack {...this.props} />
 			</Collab>
 		);
 	}

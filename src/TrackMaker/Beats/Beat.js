@@ -2,15 +2,23 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Division from '../Divisions/Division';
+import { makeArrayWithIndex } from '../../utils/functions'
 import './style.css'
 
 class Beat extends Component {
-
 	showDivisions() {
-		let { beat } = this.props;
-		return beat.division_ids.map((div_id, index) => {
-			return <Division key={index} divisionId={div_id}/>
-		});
+		let { layerId, measureIndex, beatIndex, pulsePerBeat } = this.props;
+		return makeArrayWithIndex(pulsePerBeat).map((index) => {
+			return <Division
+				layerId={layerId}
+				measureIndex={measureIndex}
+				beatIndex={beatIndex}
+				divisionIndex={index}
+			/>
+		})
+		// return beat.division_ids.map((div_id, index) => {
+		// 	return <Division measureIndex={measureIndex} beatIndex={beatIndex} divisionIndex={index} divisionId={div_id}/>
+		// });
 	}
 
 	render() {
@@ -24,7 +32,7 @@ class Beat extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return ({
-		beat: state.track.beats[ownProps.beatId]
+		pulsePerBeat: state.track.details.pulsePerBeat
 	})
 }
 

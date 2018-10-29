@@ -1,3 +1,30 @@
+import api from '../api'
+import { batchActions } from 'redux-batched-actions';
+
+export const saveTrack = (track_params, goToTrackCallback) => {
+	return (dispatch) => {
+		api.post('/projects', { project: track_params })
+			.then(({data}) => {
+				let setCurrentProject= {
+					type: 'SET_CURRENT_PROJECT',
+					payload: data.data
+				}
+				dispatch(batchActions([setCurrentProject]));
+				goToTrackCallback(data);
+			})
+			.catch((err) => {
+				debugger;
+			})
+	}
+}
+
+export const editTrackDetail = (edits) => {
+	return {
+		type: 'EDIT_TRACK_DETAIL',
+		payload: edits
+	}
+}
+
 export const addTrackBpm= (bpm) => {
 	return {
 		type: 'ADD_TRACK_BPM',

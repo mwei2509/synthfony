@@ -18,7 +18,7 @@ export default class CreateEffectModal extends Component {
 		this.sendNewSettings = this.sendNewSettings.bind(this);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.changeEffect(this.state.type)
 	}
 
