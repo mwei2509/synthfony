@@ -1,3 +1,4 @@
+let { getTimeInMs } = '../utils/functions'
 let defaultCurrentSelection = {
 	currentLayer: null, // layer id
 	currentMeasure: null, // measure id
@@ -45,9 +46,7 @@ let trackDetailDefaults = {
 	loop: true,
 	lastUpdate: null
 };
-const getTimestamp = () => {
-	return new Date().getTime();
-}
+
 export const manageDetails = (state = trackDetailDefaults, action) => {
 	switch(action.type) {
 		case "NEW_PROJECT":
@@ -65,39 +64,39 @@ export const manageDetails = (state = trackDetailDefaults, action) => {
 		case "ADD_MEASURE":
 			return {
 				...state,
-				lastUpdate: getTimestamp()
+				lastUpdate: getTimeInMs()
 			}
 		case "ADD_NOTE":
 			return {...state,
-				lastUpdate: getTimestamp()
+				lastUpdate: getTimeInMs()
 			}
 		case "ADD_TRACK_BPM":
 			return {...state, 
 				bpm: action.payload,
-				lastUpdate: getTimestamp()
+				lastUpdate: getTimeInMs()
 			};
 		case "ADD_EFFECT":
 			let { newEffect } = action.payload;
 			return {...state, 
 				effect_ids: [...state.effect_ids, newEffect.id],
-				lastUpdate: getTimestamp()
+				lastUpdate: getTimeInMs()
 			};
 		case "ADD_LAYER":
 			let { newLayer } = action.payload;
 			return {...state, 
 				layer_ids: [...state.layer_ids, newLayer.id],
-				lastUpdate: getTimestamp()
+				lastUpdate: getTimeInMs()
 			};
 		case "CATCH_UP_TRACK":
 			let { details } = action.payload;
 			return {...details,
-				lastUpdate: getTimestamp()
+				lastUpdate: getTimeInMs()
 			};
 		case "DEACTIVATE_LAYER":
 			return {
 				...state,
 				layer_ids: state.layer_ids.filter(layer_id => layer_id !== action.payload),
-				lastUpdate: getTimestamp()
+				lastUpdate: getTimeInMs()
 			};
 		default:
 			return state;

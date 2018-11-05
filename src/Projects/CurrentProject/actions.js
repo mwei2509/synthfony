@@ -20,13 +20,14 @@ export const fetchProject = (username, track_slug) => {
 			.catch((err) => { debugger; })
 	}
 }
-
-export const loadProjectIntoTrack = (currentProject, callback) => {
-	let parsedTrack = JSON.parse(currentProject.track_json);
+/**
+ * Updates object with effects and layers with tone players
+ */
+const loadNewEffectsAndPlayers = (settings) => {
 	clearPlayer();
-	for (let effectId in parsedTrack.effects) {
-		if (parsedTrack.effects.hasOwnProperty(effectId)) {
-			let effect = parsedTrack.effects[effectId];
+	for (let effectId in settings.effects) {
+		if (settings.effects.hasOwnProperty(effectId)) {
+			let effect = settings.effects[effectId];
 			let player = getNewEffect(effect.type, {
 				settings: effect.settings
 			});
@@ -34,10 +35,10 @@ export const loadProjectIntoTrack = (currentProject, callback) => {
 			SynthFony.Effects[effectId] = player;
 		}
 	}
-	for (let layerId in parsedTrack.layers) {
-		if (parsedTrack.layers.hasOwnProperty(layerId)) {
-			let layer = parsedTrack.layers[layerId];
-			let player = getNewPlayer(layer.type, callback.bind(this, layerId), {
+	for (let layerId in settings.layers) {
+		if (settings.layers.hasOwnProperty(layerId)) {
+			let layer = settings.layers[layerId];
+			let player = getNewPlayer(layer.type, null, {
 				effect_ids: layer.effect_ids	,
 				settings: layer.settings,
 				noteParts: layer.noteParts
@@ -45,6 +46,15 @@ export const loadProjectIntoTrack = (currentProject, callback) => {
 			layer.player = player;
 		}
 	}
+}
+export const loadProjectIntoPreview = (currentProject) => {
+	let parsedTrack = JSON.parse(currentProject.track_json);
+	loadNewEffectsAndPlayers(parsedTrack);
+	return parsedTrack;
+}
+export const loadProjectIntoTrack = (currentProject, callback) => {
+	let parsedTrack = JSON.parse(currentProject.track_json);
+	loadNewEffectsAndPlayers(parsedTrack);
 	return {
 		type: "CATCH_UP_TRACK",
 		payload: {

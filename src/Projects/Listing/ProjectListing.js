@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 import { fetchProjects } from './actions'
+import { getTimeInMs, getTimeDiffMs } from '../../utils/functions'
 import ProjectPreview from './ProjectPreview'
 
 class ProjectListing extends Component {
@@ -13,12 +14,19 @@ class ProjectListing extends Component {
 		}
 		this.switchPlay = this.switchPlay.bind(this)
 	}
+	
 	getProjects() {
-		let { fetchProjects } = this.props;
-		if (this.props.type !== this.props.listing.info.type) {
+		let { relevantListing, fetchProjects } = this.props;
+		let lastUpdate = relevantListing.info.lastUpdated;
+		let now = getTimeInMs();
+		let timeSinceLastUpdate = getTimeDiffMs(lastUpdate, now);
+		console.log('time since last update: ' + timeSinceLastUpdate);
+		let hasBeenFiveMinutes = timeSinceLastUpdate >= 300000;
+		if (lastUpdate === null || hasBeenFiveMinutes) {
 			fetchProjects(this.props.type);
 		}
 	}
+	
 	componentDidMount() {
 		this.getProjects();
 	}
@@ -31,7 +39,7 @@ class ProjectListing extends Component {
 		})
 	}
 	showProjects() {
-		let { projects } = this.props.listing;
+		let { projects } = this.props.relevantListing;
 		return projects.map((project, index) => {
 			let playing = index === this.state.playingId
 			return <ProjectPreview
@@ -49,9 +57,10 @@ class ProjectListing extends Component {
 		);
 	}
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+	let relevantListing = state.projects.listing[ownProps.type]
 	return ({
-		listing: state.projects.listing
+		relevantListing: relevantListing
 	})
 }
 

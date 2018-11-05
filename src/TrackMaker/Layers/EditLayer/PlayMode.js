@@ -60,7 +60,6 @@ class PlayMode extends Component {
 	selectNextInterval() {
 		let { addMeasure } = this.props;
 		let { layer } = this.props;
-	
 		let currentTime = this.getNextDivisionId();
 		if (currentTime === 'new_measure') {
 			addMeasure(layer);
@@ -134,6 +133,9 @@ class PlayMode extends Component {
 	}
 
 	getNextInLine(length, index, increment) {
+		if (index === null) {
+			return 0;
+		}
 		increment = increment || 1;
 		let nextIndex = (Number(index) + Number(increment));
 		if (nextIndex < length) {

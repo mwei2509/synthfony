@@ -3,21 +3,30 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 import { Link } from 'react-router-dom'
-import { loadProjectIntoTrack } from '../CurrentProject/actions'
-import ShowMeter from '../../TrackMaker/Playback/ShowMeter'
-import Master from '../../TrackMaker/Playback/Master'
+import { loadProjectIntoPreview } from '../CurrentProject/actions'
+import ShowMeter from '../../Playback/ShowMeter'
+import Master from '../../Playback/Master'
 
 class ProjectPreview extends Component {
 	constructor() {
 		super();
+		this.state = {
+			ready: false
+		}
 	}
 	showPlaying() {
 		let { user, slug, title, track_json } = this.props.project;
-		let { loadProjectIntoTrack, onSelect } = this.props;
+		let { onSelect } = this.props;
 		let currentProject = JSON.parse(track_json);
 		if (this.props.playing) {
-			loadProjectIntoTrack(this.props.project, ()=>{})
-			return <Master />
+			let project = loadProjectIntoPreview(this.props.project);
+			return <Master
+				isPreview={true}
+				playing={true}
+				trackPlay={project.trackPlay}
+				details={project.details}
+				layers={project.layers}
+			/>
 		} else {
 			return <ShowMeter 
 				meter={currentProject.trackPlay.meter}
@@ -28,10 +37,10 @@ class ProjectPreview extends Component {
 	}
 	render() {
 		let { user, slug, title, track_json } = this.props.project;
-		let { loadProjectIntoTrack, onSelect } = this.props;
+		let { loadProjectIntoPreview, onSelect } = this.props;
 		return (
 			<div className="ProjectPreview">
-				<Link to={`/u/${user.username}/${slug}`}>${title}</Link>
+				<Link to={`/u/${user.username}/${slug}`}>{title}</Link>
 				<button onClick={onSelect.bind(this)}>Play</button>
 				{this.showPlaying()}
 			</div>
@@ -45,7 +54,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		loadProjectIntoTrack
 	}, dispatch)
 }
 

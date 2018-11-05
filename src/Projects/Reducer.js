@@ -1,9 +1,14 @@
 import { combineReducers } from 'redux'
-import { manageListing } from './Listing/Reducer'
+import { manageListing, manageHomepage, manageDashboard } from './Listing/Reducer'
 import { manageCurrentProject } from './CurrentProject/Reducer'
 
+const listingReducer = combineReducers({
+	homepage: manageListing.bind(this, 'homepage'),
+	dashboard: manageListing.bind(this, 'dashboard')
+})
+
 const projectReducer = combineReducers({
-	listing: manageListing,// list of projects in current view
+	listing: listingReducer,
 	currentProject: manageCurrentProject, // current project details
 })
 

@@ -8,11 +8,16 @@ import ProjectListing from '../Projects/Listing/ProjectListing';
 class Dashboard extends Component {
 	constructor() {
 		super();
+		this.logout = this.logout.bind(this)
 	}
 	checkLogin() {
 		if (!this.props.loggedIn) {
 			this.props.push('/register');
 		}
+	}
+	logout() {
+		this.props.logout();
+		this.props.push('/');
 	}
 	componentDidMount() {
 		this.checkLogin();
@@ -24,8 +29,9 @@ class Dashboard extends Component {
 		return (
 			<div className="Dashboard">
 				{JSON.stringify(this.props.account)}
-				<button onClick={()=>{ this.props.logout(); }}>logout</button>
+				<button onClick={this.logout}>logout</button>
 				<button onClick={()=>{ this.props.push('/create'); }}>create new motif</button>
+				<ProjectListing type="dashboard" />
 			</div>
 		);
 	}

@@ -7,9 +7,13 @@ import { push } from 'react-router-redux'
 
 class Topbar extends Component {
 	render() {
+		let { loggedIn } = this.props;
 		return (
 			<div className={`Topbar`}>
-				<Link to={'/register'}>Register</Link>
+				{loggedIn ? 
+					<Link to={'/dashboard'}>Dashboard</Link> :
+					<Link to={'/register'}>Register</Link>
+				}
 				<Link to={'/'}>Home</Link>
 				<Link to={'/create'}>Create a motif</Link>
 			</div>
@@ -19,6 +23,7 @@ class Topbar extends Component {
 
 const mapStateToProps = (state) => {
 	return ({
+		loggedIn: state.account.loggedIn
 	})
 }
 

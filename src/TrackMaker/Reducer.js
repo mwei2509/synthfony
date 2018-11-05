@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { manageDetails, manageCurrentSelection } from './TrackReducers'
 import { manageLayers } from './Layers/Reducer'
 import { manageEffects } from './Effects/Reducer'
-import { managePlayback } from './Playback/Reducer'
+import { managePlayback } from '../Playback/Reducer'
 
 const trackReducer = combineReducers({
 	details: manageDetails,
