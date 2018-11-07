@@ -328,7 +328,8 @@ const PlayerMap = {
 			callback();
 			return new Tone.MembraneSynth(settings);
 		},
-		instrument: 'piano'
+		instrument: 'piano',
+		isMembrane: true
 	},
 	metalSynth: {
 		defaultSettings: {

@@ -53,10 +53,10 @@ class CreateLayer extends Component {
 	}
 	renderSidebarModal() {
 		return (
-			<span>
-				<FontAwesomeIcon icon="plus" />
+			<button className="icon">
+				<FontAwesomeIcon icon="sticky-note" />
 				{this.props.expanded ? <span className="sidebar-label">Create Layer</span> : null}
-			</span>
+			</button>
 		)
 	}
 	

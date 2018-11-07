@@ -9,6 +9,7 @@ import { initPlayer } from './PlayersAndEffects/Load'
 import { fetchProject, loadProjectIntoTrack } from '../Projects/CurrentProject/actions';
 import Layers from './Layers/Layers'
 import Playback from '../Playback/index'
+import TrackDetails from './TrackDetails'
 
 class CreateTrack extends Component {
 
@@ -53,6 +54,7 @@ class CreateTrack extends Component {
 
 	render() {
 		return <div>
+				<TrackDetails />
 				<Playback isMaster={true}/>
 				<Layers />
 			</div>

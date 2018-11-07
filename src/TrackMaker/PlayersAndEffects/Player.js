@@ -132,13 +132,13 @@ class Player {
 	}
 	
 	trigger = (note, duration, time) => {
-		if (this.details.ready) {			
+		if (this.details.ready) {
 			let instrument = PlayerMap[this.details.type];
 			switch(true) {
 				case instrument.isNoNoteTrigger: return this.player.triggerAttackRelease(duration, time);
 				case instrument.isStart: return this.player.get(note).start(undefined, 0, duration);
 				case instrument.isNoNoteStart: return this.player.start(undefined, 0, duration);
-				default: return this.player.triggerAttackRelease(note, duration);
+				default: return this.player.triggerAttackRelease(note, duration, time);
 			}
 		}
 	}

@@ -1,0 +1,27 @@
+.ProjectListing {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: 10px;
+}
+
+.ProjectPreview {
+	margin: 5px;
+	flex: 1;
+}
+/* project preview specificsin playback css */
+.ProjectPreview:nth-child(5n+5) {
+	background-color: #FB9334;
+}
+.ProjectPreview:nth-child(5n+4) {
+	background-color: #FE6625;
+}
+.ProjectPreview:nth-child(5n+3) {
+	background-color: #44857D;
+}
+.ProjectPreview:nth-child(5n+2) {
+	background-color: #187070;
+}
+.ProjectPreview:nth-child(5n+1) {
+	background-color: #003D59;
+}

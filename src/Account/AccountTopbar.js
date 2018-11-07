@@ -1,36 +1,34 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Link } from 'react-router-dom'
 import { logout } from './actions';
 import { push } from 'react-router-redux'
 import ProjectListing from '../Projects/Listing/ProjectListing';
 
-class Dashboard extends Component {
+class AccountTopbar extends Component {
 	constructor() {
 		super();
 		this.logout = this.logout.bind(this)
-	}
-	checkLogin() {
-		if (!this.props.loggedIn) {
-			this.props.push('/register');
-		}
 	}
 	logout() {
 		this.props.logout();
 		this.props.push('/');
 	}
-	componentDidMount() {
-		this.checkLogin();
-	}
-	componentDidUpdate() {
-		this.checkLogin();
+	getLoggedIn() {
+		return <div className="AccountTopbar logged-in">
+			<Link to={'/dashbaord'}>Dashboard</Link>
+			<span className="nav-link" onClick={this.logout}>Logout</span>
+		</div>
 	}
 	render() {
-		let { username } = this.props.account;
+		if (this.props.loggedIn) {
+			return this.getLoggedIn()
+		}
 		return (
-			<div className="Dashboard">
-				<button onClick={()=>{ this.props.push('/create'); }}>create new motif</button>
-				<ProjectListing type="dashboard" />
+			<div className="AccountTopbar">
+				<Link to={'/register'}>Register</Link>
 			</div>
 		);
 	}
@@ -48,6 +46,6 @@ const mapDispatchToProps = (dispatch) => {
 	}, dispatch)
 }
 
-const ConnectedDashboard = connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+const ConnectedAccountTopbar = connect(mapStateToProps, mapDispatchToProps)(AccountTopbar)
 
-export default ConnectedDashboard
+export default ConnectedAccountTopbar

@@ -22,10 +22,10 @@ class CreateEffect extends Component {
 
 	renderToggleModal() {
 		return (
-			<span>
-				<FontAwesomeIcon icon="plus" />
+			<button className="icon">
+				<FontAwesomeIcon icon="magic" />
 				{this.props.expanded ? <span className="sidebar-label">Create Effect</span> : null}
-			</span>
+			</button>
 		)
 	}
 

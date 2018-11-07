@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReadOnlySidebarControls from './ReadOnlySidebarControls';
+import SidebarControls from './SidebarControls';
 import CreateTrack from '../TrackMaker/CreateTrack';
 import './style.css';
 // no saving
@@ -7,7 +7,7 @@ export default class CreateEditTrackWrapper extends Component {
 	render() {
 		return (
 			<div className='CreateEditTrack container'>
-				<ReadOnlySidebarControls />
+				<SidebarControls readOnly={true}/>
 				<CreateTrack {...this.props} />
 			</div>
 		);

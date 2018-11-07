@@ -1,4 +1,5 @@
-let { getTimeInMs } = '../utils/functions'
+import { getTimeInMs } from '../utils/functions'
+
 let defaultCurrentSelection = {
 	currentLayer: null, // layer id
 	currentMeasure: null, // measure id

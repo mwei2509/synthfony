@@ -18,7 +18,7 @@
 
 .Layer {
 	background-color: #ffdb58;
-	margin: 5px;
+	/* margin: 5px; */
 	border-radius: 10px;
 	padding: 10px;
 }

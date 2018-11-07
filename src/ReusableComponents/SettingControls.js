@@ -11,9 +11,10 @@ export default class SettingControls extends Component {
 	}
 	changeNumericSetting(type, value) {
 		let { sendNewSettings, editSettings } = this.props;
+		value = Number(value);
 		let newSettings = this.getNewSettings(type, value);
 		sendNewSettings(newSettings);
-		editSettings(type, Number(value));
+		editSettings(type, value);
 	}
 	changeOption(type, value) {
 		let { sendNewSettings, editSettings } = this.props;

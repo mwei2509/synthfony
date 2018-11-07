@@ -14,13 +14,20 @@ export default class SidebarControls extends Component {
 		}
 	}
 	render() {
+		let { readOnly } = this.props;
 		let { expanded } = this.state;
 		return (
 			<div className={`SidebarControls ${expanded ? 'expanded':''}`}>
-				<span className="icon" onClick={()=>{this.setState({ expanded: !expanded })}}><FontAwesomeIcon icon="bars" /></span>
-				<SaveTrack expanded={this.state.expanded} />
+				<button 
+					className="icon" 
+					onClick={()=>{this.setState({ expanded: !expanded })}}>
+					<FontAwesomeIcon icon="bars" />
+				</button>
+				{readOnly ? null: <SaveTrack expanded={this.state.expanded} />}	
 				<Playback expanded={this.state.expanded} />
-				<TrackDetails expanded={this.state.expanded} />
+				<TrackDetails
+					sidebar={true}
+					expanded={this.state.expanded} />
 				<CreateLayer expanded={this.state.expanded} />
 				<CreateEffect expanded={this.state.expanded} />
 			</div>

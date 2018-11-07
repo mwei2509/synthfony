@@ -15,6 +15,6 @@ export const SynthFony = {
 		waveform: new Tone.Waveform(1024),
 	}
 };
-
+window.SynthFony = SynthFony;
 export const API_URL = (window.location.hostname.indexOf('localhost') > -1) ? process.env.REACT_APP_API_URL : process.env.REACT_APP_API_URL_PROD;
 export const BASE_URL = (window.location.hostname.indexOf('localhost') > -1) ? process.env.REACT_APP_BASE_URL : process.env.REACT_APP_BASE_URL_PROD;

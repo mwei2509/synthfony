@@ -5,6 +5,7 @@ import { push } from 'react-router-redux'
 import { fetchProjects } from './actions'
 import { getTimeInMs, getTimeDiffMs } from '../../utils/functions'
 import ProjectPreview from './ProjectPreview'
+import './style.css'
 
 class ProjectListing extends Component {
 	constructor() {

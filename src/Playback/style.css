@@ -1,0 +1,32 @@
+.Playback {
+	/* display: flex;
+	flex-direction: column; */
+}
+
+.Master {
+	/* background-color: #fff000; */
+}
+
+.ShowMeter {
+	height: 200px;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.meter-bars {
+	flex: 1;
+	margin: 0px 1px 0px 0px;
+	width: 10px;
+	background-color: #000;
+}
+
+.ProjectPreview .meter-bars {
+	width: 3px;
+	background-color: #fff;
+}
+
+.meter_played {
+	background-color: #ff0000 !important;
+}

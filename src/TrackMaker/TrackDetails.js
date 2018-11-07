@@ -11,29 +11,33 @@ class TrackDetails extends Component {
 		}
 		return null;
 	}
+
+	renderSidebar() {
+		let { addTrackBpm, details } = this.props;
+		return (
+			<div className='track-details'>
+				<button className="icon" onClick={()=>{addTrackBpm((Number(details.bpm) + 1))}}>
+					<FontAwesomeIcon icon="arrow-circle-up" />
+					{this.getExpanded('increase tempo')}
+				</button>
+				<button className="icon" onClick={()=>{addTrackBpm((Number(details.bpm) - 1))}}>
+					<FontAwesomeIcon icon="arrow-circle-down" />
+					{this.getExpanded('decrease tempo')}
+				</button>
+			</div>
+		)
+	}
+
 	render() {
 		let { addTrackBpm, details } = this.props;
-		if (this.props.expanded) {
-			return (
-				<div className='track-details'>
-					<div className='track-details__bpm'>
-						<span className="splitter"></span>
-						<span className="sidebar-label title">TRACK DETAILS</span>
-						<span className="sidebar-label">Beats Per Minute: {details.bpm}</span>
-						<span className="icon" onClick={()=>{addTrackBpm((Number(details.bpm) + 1))}}>
-							<FontAwesomeIcon icon="arrow-circle-up" />
-							<span className="sidebar-label">increase tempo</span>
-						</span>
-						<span className="icon" onClick={()=>{addTrackBpm((Number(details.bpm) - 1))}}>
-							<FontAwesomeIcon icon="arrow-circle-down" />
-							<span className="sidebar-label">decrease tempo</span>
-						</span>
-						<span className="splitter"></span>
-					</div>
-				</div>
-			)
+		if (this.props.sidebar) {
+			return this.renderSidebar()
 		}
-		return null;
+		return <div className='track-details-main'>
+			<span>BPM: {details.bpm}<br />
+				Pulse per beat: {details.pulsePerBeat}<br />
+				Beats per measure: {details.beatsPerMeasure}</span>
+		</div>
 	}
 }
 

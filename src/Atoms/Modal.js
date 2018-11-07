@@ -38,7 +38,7 @@ export default class Modal extends Component {
 		return <FontAwesomeIcon icon="plus" />
 	}
 	renderToggleModal() {
-		return <span className="icon" onClick={this.open}>
+		return <span onClick={this.open}>
 			{this.renderButton()}
 		</span>
 	}

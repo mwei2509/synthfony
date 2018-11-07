@@ -53,10 +53,10 @@ class SaveTrack extends Component {
 	}
 	renderToggleModal() {
 		return (
-			<span>
+			<button className="icon">
 				<FontAwesomeIcon icon="save" />
 				{this.props.expanded ? <span className="sidebar-label">Save Track</span> : null}
-			</span>
+			</button>
 		)
 	}
 	handleChange(field, value) {

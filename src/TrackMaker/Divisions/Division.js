@@ -21,10 +21,12 @@ class Division extends Component {
 
 	toggleSelect(e) {
 		e.stopPropagation();
-		let { updateSelection, currentSelection } = this.props;
+		let { updateSelection} = this.props;
 		let { layerId, measureIndex, beatIndex, divisionIndex } = this.props;
 
-		if (currentSelection.currentDivision === divisionIndex) {
+		let sameNote = this.isSelected();
+		if (sameNote) {
+			// deselect
 			updateSelection({
 				currentLayer: layerId,
 				currentMeasure: measureIndex,

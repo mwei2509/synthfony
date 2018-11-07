@@ -55,17 +55,6 @@ body, html {
 	margin-right: auto; */
 }
 
-button {
-	cursor: pointer;
-	background-color: #fff;
-	border-radius: 6px;
-	padding: 5px;
-	border: 0px;
-	outline: none;
-}
-button:hover {
-	background-color: #FFFFE0;
-}
 select {
 	cursor: pointer;
 	outline: none;
@@ -150,16 +139,29 @@ teal: 428589*/
 	display: flex;
 }
 
-.icon {
+button.icon {
 	display: block;
 	margin: 5px;
 	cursor: pointer;
+	background-color: #fff;
+	outline: none;
+	border: 0;
 }
-.icon:hover {
+
+button.icon:hover {
 	color: #9CD29E;
 }
 
-.Topbar a {
+button.icon:disabled {
+	cursor: default !important;
+	color: #ddd;
+}
+
+.Topbar {
+	display: flex;
+	flex-direction: row;
+}
+.Topbar a, .nav-link {
 	color: #000;
 	font-size: 14px;
 	text-decoration: none;
@@ -168,6 +170,6 @@ teal: 428589*/
 	padding: 4px 5px;
 	transition: .4s;
 }
-.Topbar a:hover {
+.Topbar a:hover, span.nav-link:hover {
 	background-color: #eee;
 }
