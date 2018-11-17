@@ -18,6 +18,12 @@ export const saveTrack = (track_params, goToTrackCallback) => {
 	}
 }
 
+export const newProject = () => {
+	return {
+		type: 'NEW_PROJECT'
+	};
+}
+
 export const editTrackDetail = (edits) => {
 	return {
 		type: 'EDIT_TRACK_DETAIL',

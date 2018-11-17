@@ -7,6 +7,7 @@ import { clearUser, logout, refreshUser } from './actions' // session actions
 import { editLayerReady } from './Layers/actions'
 import { initPlayer } from './PlayersAndEffects/Load'
 import { fetchProject, loadProjectIntoTrack } from '../Projects/CurrentProject/actions';
+import { newProject } from './actions';
 import Layers from './Layers/Layers'
 import Playback from '../Playback/index'
 import TrackDetails from './TrackDetails'
@@ -18,9 +19,9 @@ class CreateTrack extends Component {
 	}
 	loadCorrectProject() {
 		let { path, params } = this.props.match;
-		let { editLayerReady, fetchProject, loadProjectIntoTrack, currentProject, loadedTrackProjectId } = this.props;
+		let { newProject, editLayerReady, fetchProject, loadProjectIntoTrack, currentProject, loadedTrackProjectId } = this.props;
 		if (path === '/create') {
-			return;
+			return newProject();
 		}
 		if (params.track_slug) {
 			let loadedCorrectly = ((params.track_slug === currentProject.slug) && (currentProject.project_id === loadedTrackProjectId))
@@ -70,7 +71,7 @@ const mapStateToProps = (state) => {
 	
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		fetchProject, loadProjectIntoTrack, editLayerReady
+		fetchProject, loadProjectIntoTrack, editLayerReady, newProject
 	}, dispatch)
 }
 
