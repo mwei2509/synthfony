@@ -3,7 +3,7 @@ import SidebarControls from './SidebarControls';
 import CreateTrack from '../TrackMaker/CreateTrack';
 import './style.css';
 
-export default class CreateEditTrackWrapper extends Component {
+export default class CreateEditTrack extends Component {
 	render() {
 		return (
 			<div className='CreateEditTrack container'>

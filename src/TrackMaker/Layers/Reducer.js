@@ -2,6 +2,8 @@ let defaultLayers = {};
 
 export const manageLayers = (state = defaultLayers, action) => {
 	switch(action.type) {
+		case 'NEW_PROJECT':
+			return defaultLayers;
 		case 'ADD_NOTE':
 			let { newNote } = action.payload
 			return {

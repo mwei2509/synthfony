@@ -32,6 +32,8 @@ let indexDefaults = {
 
 export const managePlayback = (state = indexDefaults, action) => {
 	switch(action.type) {
+		case "NEW_PROJECT":
+			return indexDefaults;
 		case "CATCH_UP_TRACK":
 			return {
 				...state,
