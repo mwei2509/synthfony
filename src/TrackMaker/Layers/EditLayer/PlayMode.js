@@ -7,6 +7,7 @@ import { addMeasure } from '../../Measures/actions';
 import { editLayerDetail } from '../actions';
 import Piano from '../../Instruments/Piano';
 import Drums from '../../Instruments/Drums';
+import Source from '../../Instruments/Source';
 import AudioVisualization from '../../../AudioVisualization/index'
 import LayerControls from './LayerControls'
 import { SynthFony } from '../../../utils/variables'
@@ -207,6 +208,7 @@ class PlayMode extends Component {
 			case 'piano': return <Piano playNote={this.playNote}/>;
 			case 'drum': return <Drums playNote={this.playNote} notes={layer.notes}/>;
 			case 'singleClap': return <Drums playNote={this.playNote} notes={['hit']}/>;
+			case 'player': return <Source playNote={this.playNote} player={layer.player}/>;
 			default: return null
 		}
 	}

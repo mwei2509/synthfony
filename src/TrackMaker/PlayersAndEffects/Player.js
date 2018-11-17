@@ -131,13 +131,14 @@ class Player {
 		return this.player.set(key, value);
 	}
 	
-	trigger = (note, duration, time) => {
+	trigger = (note, duration, time, offset) => {
 		if (this.details.ready) {
 			let instrument = PlayerMap[this.details.type];
 			switch(true) {
 				case instrument.isNoNoteTrigger: return this.player.triggerAttackRelease(duration, time);
 				case instrument.isStart: return this.player.get(note).start(undefined, 0, duration);
 				case instrument.isNoNoteStart: return this.player.start(undefined, 0, duration);
+				case instrument.isPlayer: return this.player.start(time, offset, duration);
 				default: return this.player.triggerAttackRelease(note, duration, time);
 			}
 		}
@@ -152,7 +153,7 @@ class Player {
 	}
 
 	// return {
-	// 	// details
+	// 	// detailsf
 	// 	player: this.player,
 	// 	details: this.details,
 	// 	notes: this.notes,
